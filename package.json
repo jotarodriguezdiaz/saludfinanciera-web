@@ -8,7 +8,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "npm install -g @angular/cli@latest && cd components && npm install && npm run lint && npm run build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

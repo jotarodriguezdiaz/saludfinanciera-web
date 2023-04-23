@@ -9,6 +9,10 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+    - name: Instalar Angular CLI
+      run: npm install -g @angular/cli
+    - name: Establecer variable de entorno PATH para Angular CLI
+      run: echo "::add-path::$(npm prefix -g)/bin"
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Use Node.js

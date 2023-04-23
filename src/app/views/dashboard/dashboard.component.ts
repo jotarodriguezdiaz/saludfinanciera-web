@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 
 import { DashboardChartsData, IChartProps } from './dashboard-charts-data';
+import { FinanceService } from '../../finance.service';
 
 interface IUser {
   name: string;
@@ -22,8 +23,11 @@ interface IUser {
   styleUrls: ['dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  constructor(private chartsData: DashboardChartsData) {
+  constructor(private chartsData: DashboardChartsData, private service: FinanceService) {
   }
+
+  boards: any = []; // poner modelo
+  token = '';
 
   public users: IUser[] = [
     {
@@ -113,6 +117,16 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.initCharts();
+  }
+
+  buscarBoards(){
+    // TODO: Esto es una prueba para probar una petición en los entornos desarrollo y prducción.
+    // El token en un input porque aún no tengo la parte login implementada.
+    // Debo crear un servicio que maneje el token activo.
+    // OJo cuando el token caduque. Preocupación para futuro.
+    this.service.getBoards(1, this.token).subscribe((boards) => {
+      this.boards = boards;
+    })
   }
 
   initCharts(): void {

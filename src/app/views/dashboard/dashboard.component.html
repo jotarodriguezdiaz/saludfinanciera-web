@@ -1,3 +1,13 @@
+<c-card class="mb-4">
+  token: <input [(ngModel)]="token">
+  <pre>
+    {{boards | json}}
+  </pre>
+  <button (click)="buscarBoards()" cButton class="float-end" color="primary">
+    Buscar boards
+  </button>
+</c-card>
+
 <app-widgets-dropdown></app-widgets-dropdown>
 <c-card class="mb-4">
   <c-card-body>

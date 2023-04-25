@@ -9,14 +9,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class LoginService {
-  private url = environment.urlFinance + 'identity';
+  private url = environment.urlGateway + 'identity';
 
   constructor(private http: HttpClient) { }
 
   // TODO: pendiente https
-  // pendiente guardar en servicio el token o en storagelocal, consultar chatgpt
   // pendiente mantener la sesión activa
-  // pendiente guards
   // pendiente gestionar si refresca pantalla
   // ojo sesión caducada, token inválido  
   login(authRequest: AuthRequest): Observable<AuthResponse> {

@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   allowedDomain: 'localhost',
-  urlFinance: 'http://localhost:5003/api/'
+  urlGateway: 'http://localhost:5003/api/',
+  urlFinance: 'http://localhost:5054/api/'
   // urlFinance: 'http://saludfinancieragateway.duckdns.org:5003/gateway/' // IP temporalmetne, después pondré el dominio route 53
 };
 

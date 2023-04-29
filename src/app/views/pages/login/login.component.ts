@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
-import { LoginService } from './login.service';
-import { AuthRequest } from './authRequest';
-import { AuthService } from '../../../auth/auth.service';
-import { AuthResponse } from './authResponse';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs';
+
+import {
+  AuthService,
+  LoginService,
+  AuthRequest,
+  AuthResponse
+} from 'src/app/auth';
 
 @Component({
   selector: 'app-login',
@@ -13,27 +17,28 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   email = '';
   password = ''; // TODO: hay alguna manera de pasar esto de forma más segura en angular?    
+  spinner = false;
 
   constructor(
-    private service: LoginService, 
-    private authService: AuthService, 
+    private service: LoginService,
+    private authService: AuthService,
     private router: Router) { }
 
   // TODO: servicio para captar distintos tipos de errores. 
   // ayuda chatgpt
 
   login() {
-    // TODO: Si cumple requisito de búsqueda
-
     const authRequest = {
       email: this.email,
       password: this.password
     } as AuthRequest;
 
+    // NOTIFICACIÓN SI SE EQUIVOCA
+
+    this.spinner = true;
     this.service.login(authRequest)
+      .pipe(finalize(() => this.spinner = false))
       .subscribe((res: AuthResponse) => {
-        // TODO: Pendiente meterlo a caché
-        // no será necesario recuperar de backend los demás datos, solo el token, ahí va todo.        
         this.authService.saveToken(res.token)
         this.router.navigate(['/dashboard']);
       })

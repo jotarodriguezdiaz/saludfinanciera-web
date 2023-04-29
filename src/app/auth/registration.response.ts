@@ -1,10 +1,10 @@
-import { EGender, ESuscriptionPlan } from "../../../enums";
+import { EGender, ESuscriptionPlan } from "../enums";
 
-export interface AuthResponse {
+export interface RegistrationResponse {
     id: string;
     userName: string;
     email: string;
     token: string;
     suscriptionPlan: ESuscriptionPlan;
-    genre: EGender;
+    gender: EGender;
 }

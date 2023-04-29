@@ -1,41 +1,106 @@
+<app-spinner [active]="spinner"></app-spinner>
+
 <div class="bg-light min-vh-100 d-flex flex-row align-items-center">
   <c-container>
     <c-row class="justify-content-center">
       <c-col lg="7" md="9" xl="6">
         <c-card class="mx-4">
           <c-card-body class="p-4">
-            <form cForm>
-              <h1>Register</h1>
-              <p class="text-medium-emphasis">Create your account</p>
-              <c-input-group class="mb-3">
-                <span cInputGroupText>
-                  <svg cIcon name="cilUser"></svg>
-                </span>
-                <input autoComplete="name" cFormControl placeholder="Username" />
-              </c-input-group>
-              <c-input-group class="mb-3">
-                <span cInputGroupText>@</span>
-                <input autoComplete="email" cFormControl placeholder="Email" />
-              </c-input-group>
-              <c-input-group class="mb-3">
-                <span cInputGroupText>
-                  <svg cIcon name="cilLockLocked"></svg>
-                </span>
-                <input autoComplete="new-password" cFormControl placeholder="Password" type="password" />
-              </c-input-group>
-              <c-input-group class="mb-4">
-                <span cInputGroupText>
-                  <svg cIcon name="cilLockLocked"></svg>
-                </span>
-                <input autoComplete="new-password" cFormControl placeholder="Repeat password" type="password" />
-              </c-input-group>
+            <form cForm [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+              <h1>Registro</h1>
+              <p class="text-medium-emphasis">Introduce los siguientes datos</p>
+
+              <div class="mb-3">
+                <c-input-group>
+                  <span cInputGroupText>
+                    <svg cIcon name="cilUser"></svg>
+                  </span>
+                  <input id="name" autoComplete="name" cFormControl placeholder="Nombre" formControlName="name"
+                    required /> <span class="text-danger fs-5 fw-bold ps-2">*</span>
+                </c-input-group>
+
+                <div class="small text-danger" *ngIf="f.name?.errors?.required && f.name?.touched">
+                  El nombre es obligatorio.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <c-input-group>
+                  <span cInputGroupText>@</span>
+                  <input autoComplete="email" cFormControl placeholder="Correo electrónico:" id="email" type="email"
+                    formControlName="email" required /> <span class="text-danger fs-5 fw-bold ps-2">*</span>
+                </c-input-group>
+
+                <div class="small text-danger" *ngIf="f.email?.errors?.required && f.email?.touched">
+                  El correo electrónico es obligatorio.
+                </div>
+                <div class="small text-danger" *ngIf="f.email?.errors?.email && f.email?.touched">
+                  El correo electrónico no es válido.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <c-input-group>
+                  <span cInputGroupText>
+                    <svg cIcon name="cilLockLocked"></svg>
+                  </span>
+                  <input id="password" autoComplete="new-password" cFormControl placeholder="Contraseña" type="password"
+                    formControlName="password" required /> <span class="text-danger fs-5 fw-bold ps-2">*</span>
+                </c-input-group>
+
+                <div class="small text-danger" *ngIf="f.password?.errors?.required && f.password?.touched">
+                  La contraseña es obligatoria.
+                </div>
+                <div class="small text-danger" *ngIf="f.password?.errors?.minLength && f.password?.touched">
+                  La contraseña debe tener al menos 8 caracteres.
+                </div>
+                <div class="small text-danger" *ngIf="f.password?.errors?.passwordStrength && f.password?.touched">
+                  La contraseña debe contener al menos una mayúscula y una minúscula.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <c-input-group>
+                  <span cInputGroupText>
+                    <svg cIcon name="cilLockLocked"></svg>
+                  </span>
+                  <input autoComplete="new-password" cFormControl placeholder="Confirmar contraseña"
+                    id="confirmPassword" type="password" formControlName="confirmPassword" required /> <span
+                    class="text-danger fs-5 fw-bold ps-2">*</span>
+                </c-input-group>
+
+                <div class="small text-danger"
+                  *ngIf="f.confirmPassword?.errors?.required && f.confirmPassword?.touched">
+                  La confirmación de contraseña es obligatoria.
+                </div>
+                <div class="small text-danger" *ngIf="form.hasError('passwordsMismatch') && f.confirmPassword?.touched">
+                  Las contraseñas no coinciden.
+                </div>
+              </div>
+
+              <div class="col-5 mb-3">
+                <c-input-group>
+                  <input autoComplete="year-birth" cFormControl placeholder="Año de nacimiento" id="yearOfBirth"
+                    type="number" formControlName="yearOfBirth" required /> <span
+                    class="text-danger fs-5 fw-bold ps-2">*</span>
+                </c-input-group>
+
+                <div class="small text-danger" *ngIf="f.yearOfBirth?.errors?.required && f.yearOfBirth?.touched">
+                  El año de nacimiento es obligatorio.
+                </div>
+                <div class="small text-danger" *ngIf="f.yearOfBirth?.errors?.yearOutOfRange && f.yearOfBirth?.touched">
+                  El año de nacimiento debe ser un año válido.
+                </div>
+              </div>
+
               <div class="d-grid">
-                <button cButton color="success">Create Account</button>
+                <button cButton type="submit" color="success" class="text-white">Crear cuenta</button>
               </div>
             </form>
           </c-card-body>
         </c-card>
       </c-col>
     </c-row>
+
   </c-container>
 </div>

@@ -7,7 +7,10 @@ import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
-  template: '<router-outlet></router-outlet>',
+  template: `
+    <app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
+    <router-outlet></router-outlet>
+  `,
 })
 export class AppComponent implements OnInit {
   title = 'Salud financiera';

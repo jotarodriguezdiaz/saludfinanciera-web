@@ -49,6 +49,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ToastsContainer } from './core/toast/toasts-container.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -94,13 +96,15 @@ export function tokenGetter() {
     BadgeModule,
     ListGroupModule,
     CardModule,
+    ToastsContainer,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
         allowedDomains: [environment.allowedDomain],
         disallowedRoutes: []
       }
-    })
+    }),
+    NgbModule
   ],
   providers: [
     {

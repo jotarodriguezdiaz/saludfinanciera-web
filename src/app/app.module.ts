@@ -51,6 +51,7 @@ import { environment } from 'src/environments/environment';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastsContainer } from './core/toast/toasts-container.component';
+import { CoreModule } from './core/core.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -67,7 +68,10 @@ export function tokenGetter() {
 }
 
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS],
+  declarations: [
+    AppComponent,
+    ...APP_CONTAINERS
+  ],
   imports: [
     HttpClientModule,
     BrowserModule,
@@ -97,6 +101,7 @@ export function tokenGetter() {
     ListGroupModule,
     CardModule,
     ToastsContainer,
+    CoreModule.forRoot(),
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

@@ -16,16 +16,13 @@ import {
 })
 export class LoginComponent {
   email = '';
-  password = ''; // TODO: hay alguna manera de pasar esto de forma más segura en angular?    
+  password = '';
   spinner = false;
 
   constructor(
     private service: LoginService,
     private authService: AuthService,
     private router: Router) { }
-
-  // TODO: servicio para captar distintos tipos de errores. 
-  // ayuda chatgpt
 
   login() {
     const authRequest = {
@@ -40,7 +37,7 @@ export class LoginComponent {
       .pipe(finalize(() => this.spinner = false))
       .subscribe((res: AuthResponse) => {
         this.authService.saveToken(res.token)
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/boards']);
       })
   }
 

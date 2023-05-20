@@ -11,7 +11,7 @@ import { AuthGuard } from './guards/auth.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'boards',
     pathMatch: 'full'
   },
   {
@@ -22,58 +22,70 @@ const routes: Routes = [
     },
     children: [
       {
+        path: 'boards',
+        loadChildren: () =>
+          import('./views/boards/boards.module').then((m) => m.BoardsModule),
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'board/:id',
+        loadChildren: () =>
+          import('./views/board/board.module').then((m) => m.BoardModule),
+        canActivate: [AuthGuard]
+      },
+      {
         path: 'dashboard',
         loadChildren: () =>
           import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule),
-          canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'theme',
         loadChildren: () =>
           import('./views/theme/theme.module').then((m) => m.ThemeModule),
-          canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'base',
         loadChildren: () =>
           import('./views/base/base.module').then((m) => m.BaseModule),
-          canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'buttons',
         loadChildren: () =>
           import('./views/buttons/buttons.module').then((m) => m.ButtonsModule),
-          canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'forms',
         loadChildren: () =>
           import('./views/forms/forms.module').then((m) => m.CoreUIFormsModule),
-          canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'charts',
         loadChildren: () =>
           import('./views/charts/charts.module').then((m) => m.ChartsModule),
-          canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'icons',
         loadChildren: () =>
           import('./views/icons/icons.module').then((m) => m.IconsModule),
-          canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'notifications',
         loadChildren: () =>
           import('./views/notifications/notifications.module').then((m) => m.NotificationsModule),
-          canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'widgets',
         loadChildren: () =>
           import('./views/widgets/widgets.module').then((m) => m.WidgetsModule),
-          canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'pages',
@@ -110,7 +122,7 @@ const routes: Routes = [
       title: 'Register Page'
     }
   },
-  {path: '**', redirectTo: 'dashboard'}
+  { path: '**', redirectTo: 'dashboard' }
 ];
 
 @NgModule({

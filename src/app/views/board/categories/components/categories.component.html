@@ -1,0 +1,319 @@
+<app-create-category [boardId]="boardId" (categoryCreated)="loadCategories()"></app-create-category>
+
+<nav class="navbar navbar-dark my-3">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center container-flex-menu w-100">
+      <div class="d-flex">
+        <input class="form-control form-control-sm me-2 input-search-categories" type="search" [(ngModel)]="search"
+          [placeholder]="'buscarNav' | translate" aria-label="Search">
+
+        <app-view-categories [categories]="categories" class="me-2"></app-view-categories>
+
+        <app-view-tags [tags]="setTags" class="me-2"></app-view-tags>
+
+        <app-view-periods [periods]="periods" class="me-2"></app-view-periods>
+      </div>
+      <div class="d-flex">
+        <div class="form-check form-switch" style="min-width: 122px;">
+          <input [(ngModel)]="modeSummary" class="form-check-input" type="checkbox" id="viewModeSummary">
+          <label class="form-check-label" for="viewModeSummary">{{ 'modoResumen' | translate }}</label>
+        </div>
+
+        <div class="form-check form-check-inline ms-1">
+          <input [(ngModel)]="viewIncomes" class="form-check-input" type="checkbox" id="viewIncomes">
+          <label class="form-check-label" for="viewIncomes">{{ 'ingresos' | translate }}</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input [(ngModel)]="viewExpenses" class="form-check-input" type="checkbox" id="viewExpenses">
+          <label class="form-check-label" for="viewExpensess">{{ 'gastos' | translate }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<c-row class="mt-2">
+  <div class="col-md-12 col-lg-9">
+    <c-row>
+      <div *ngFor="let category of filteredCategories; index as i" class="mb-4"
+        [ngClass]="{'col-xl-12 col-xxl-6':modeSummary, 'col-12': !modeSummary}">
+        <c-card>
+          <c-card-header>
+            <div class="category-title" [ngClass]="{'category-title-summary':modeSummary}">
+              {{ category.name }}
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <div class="me-3 container-menu">
+                <app-create-income [categoryId]="category.categoryId" [modeSummary]="modeSummary"
+                  (created)="addIncome($event, category)" class="position-relative me-2"
+                  style="top:-4px"></app-create-income>
+
+                <app-create-expense [categoryId]="category.categoryId" [modeSummary]="modeSummary"
+                  (created)="addExpense($event, category)" class="position-relative me-2"
+                  style="top:-4px"></app-create-expense>
+
+                <app-update-category [boardId]="boardId" [category]="category" class="position-relative"
+                  (boardUpdated)="loadCategories()" style="top:-4px"></app-update-category>
+
+                <button type="button" class="btn-close" aria-label="Cerrar" (click)="deleteCategory(category)"></button>
+              </div>
+            </div>
+          </c-card-header>
+          <c-card-body>
+            <table [hover]="true" [responsive]="true" [striped]="true" cTable class="mb-0 border container-entries ">
+              <thead cTableColor="dark">
+                <tr>
+                  <th>{{ 'nombre' | translate }}</th>
+                  <th *ngIf="!modeSummary" class="text-center">{{ 'tipo' | translate}}</th>
+                  <th *ngIf="!modeSummary" class="text-center">{{ 'etiquetas' | translate}}</th>
+                  <th *ngIf="!modeSummary" class="text-center">{{ 'importancia' | translate}}</th>
+                  <th *ngIf="!modeSummary" class="text-center">{{ 'periodo' | translate}}</th>
+                  <th class="text-center" width="100">{{ 'importe' | translate}}</th>
+                  <th style="width:80px;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="category.incomes.length === 0 && category.expenses.length === 0">
+                  <td colspan="7">
+                    <div class="text-muted">{{ 'sinElementos' | translate}}</div>
+                  </td>
+                </tr>
+
+                <tr
+                  *ngIf="category.areAllFiltered && (category.incomes.length !== 0 || category.expenses.length !== 0)">
+                  <td colspan="7">
+                    <div class="text-muted">{{ 'elementosFiltrados' | translate}}</div>
+                  </td>
+                </tr>
+
+                <!-- Ingresos -->
+                <ng-container *ngFor="let income of category.incomes; index as i">
+                  <tr *ngIf="income.isVisible" class="row-entry">
+                    <td cTooltip="{{income.description}}" class="small text-medium-emphasis text-nowrap"
+                      style="min-width:200px">
+                      {{ income.name }}
+                    </td>
+                    <td *ngIf="!modeSummary"></td>
+                    <td *ngIf="!modeSummary">
+                      <span *ngFor="let tag of income.tags" class="badge text-bg-success text-light me-1">
+                        <i class="bi bi-tag"></i>
+                        {{tag.name}}
+                      </span>
+                      <app-tags [boardId]="boardId" [incomeId]="income.incomeId" [tags]="income.tags"
+                        (created)="updateIncomeTags(income.tags, $event)"></app-tags>
+                    </td>
+                    <td *ngIf="!modeSummary"></td>
+                    <td *ngIf="!modeSummary" class="text-center text-success">
+                      <div [ngSwitch]="income.period">
+                        <div *ngSwitchCase="0">{{ 'mensual' | translate }}</div>
+                        <div *ngSwitchCase="1">{{ 'cuatriMensual' | translate }}</div>
+                        <div *ngSwitchCase="2">{{ 'bianual' | translate }}</div>
+                        <div *ngSwitchCase="3">{{ 'anual' | translate }}</div>
+                      </div>
+                    </td>
+                    <td class="text-center text-success">
+                      {{ income.amount }} €
+                    </td>
+                    <td class="py-0">
+                      <div class="container-menu-entries">
+                        <app-update-income [income]="income" [categoryId]="category.categoryId"
+                          class="position-relative" (updated)="updateIncome(category, income, $event)"
+                          style="top:-4px"></app-update-income>
+
+                        <button type="button" class="btn-close" aria-label="Cerrar"
+                          (click)="deleteIncome(income.incomeId, category)"></button>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-container>
+
+                <!-- Gastos -->
+                <ng-container *ngFor="let expense of category.expenses; index as i">
+                  <tr *ngIf="expense.isVisible" class="row-entry">
+                    <td class="small text-medium-emphasis text-nowrap text-danger" cTooltip="{{expense.description}}"
+                      style="min-width:200px">
+                      {{ expense.name }}
+                    </td>
+                    <td *ngIf="!modeSummary" class="text-center text-danger">
+                      <ng-container *ngIf="expense.variable; else notVariable">
+                        <i class="bi bi-reception-3"></i> {{ 'variable' | translate }}
+                      </ng-container>
+                      <ng-template #notVariable>
+                        <i class="bi bi-infinity"></i> {{ 'fijo' | translate }}
+                      </ng-template>
+                    </td>
+                    <td *ngIf="!modeSummary">
+                      <span *ngFor="let tag of expense.tags" class="badge text-bg-primary me-1">
+                        <i class="bi bi-tag"></i>
+                        {{tag.name}}
+                      </span>
+                      <app-tags [boardId]="boardId" [expenseId]="expense.expenseId" [tags]="expense.tags"
+                        (created)="updateExpenseTags(expense.tags, $event)"></app-tags>
+                    </td>
+                    <td *ngIf="!modeSummary" class="text-center text-danger">
+                      <div [ngSwitch]="expense.relevance">
+                        <div *ngSwitchCase="0"><i class="bi bi-chevron-double-down"></i> {{ 'muyBaja' | translate }}
+                        </div>
+                        <div *ngSwitchCase="1"><i class="bi bi-chevron-down"></i> {{ 'baja' | translate }}</div>
+                        <div *ngSwitchCase="2"><i class="bi bi-chevron-bar-expand"></i> {{ 'media' | translate }}</div>
+                        <div *ngSwitchCase="3"><i class="bi bi-chevron-up"></i> {{ 'alta' | translate }}</div>
+                        <div *ngSwitchCase="4"><i class="bi bi-chevron-double-up"></i> {{ 'muyAlta' | translate }}
+                        </div>
+                      </div>
+                    </td>
+                    <td *ngIf="!modeSummary" class="text-center text-danger">
+                      <div [ngSwitch]="expense.period">
+                        <div *ngSwitchCase="0">{{ 'mensual' | translate }}</div>
+                        <div *ngSwitchCase="1">{{ 'cuatriMensual' | translate }}</div>
+                        <div *ngSwitchCase="2">{{ 'bianual' | translate }}</div>
+                        <div *ngSwitchCase="3">{{ 'anual' | translate }}</div>
+                      </div>
+                    </td>
+
+                    <td class="text-center text-danger">
+                      {{ expense.amount }} €
+                    </td>
+
+                    <td class="py-0">
+                      <div class="container-menu-entries">
+                        <app-update-expense [expense]="expense" [categoryId]="category.categoryId"
+                          class="position-relative" (updated)="updateExpense(category, expense, $event)"
+                          style="top:-4px"></app-update-expense>
+
+                        <button type="button" class="btn-close" aria-label="Cerrar"
+                          (click)="deleteExpense(expense.expenseId, category)"></button>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-container>
+
+                <tr *ngIf="category.incomes.length > 0 || category.expenses.length > 0">
+                  <td *ngIf="!modeSummary"></td>
+                  <td *ngIf="!modeSummary"></td>
+                  <td *ngIf="!modeSummary"></td>
+                  <td *ngIf="!modeSummary"></td>
+                  <td class="text-end p-1 pe-2"><b>Total</b></td>
+                  <td [ngClass]="{'text-success': category.isPositive, 'text-danger': !category.isPositive}"
+                    class="text-center text-success fw-bold">
+                    {{ category.total }} €
+                  </td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </c-card-body>
+        </c-card>
+      </div>
+    </c-row>
+
+  </div>
+  <div class="col-md-12 col-lg-3">
+    <ng-container *ngIf="categories">
+      <div class="d-flex align-items-baseline justify-content-between">
+        <h5>Estimaciones principales</h5>
+
+        <button (click)="visiblePrimaryEstimates = !visiblePrimaryEstimates" type="button"
+          class="btn btn-primary btn-sm btn-minimice">
+          <i class="bi" [ngClass]="{'bi-dash-lg':visiblePrimaryEstimates, 'bi-plus-lg':!visiblePrimaryEstimates}"></i>
+        </button>
+      </div>
+
+      <ng-container *ngIf="visiblePrimaryEstimates">
+        <app-summary [period]="0" [categories]="categories"></app-summary>
+        <app-summary [period]="3" [categories]="categories"></app-summary>
+      </ng-container>
+
+      <div class="d-flex align-items-baseline justify-content-between mt-4">
+        <h5>Estimaciones secundarias</h5>
+
+        <button (click)="visibleSecondaryEstimates = !visibleSecondaryEstimates" type="button"
+          class="btn btn-primary btn-sm btn-minimice">
+          <i class="bi" [ngClass]="{'bi-dash-lg':visibleSecondaryEstimates, 'bi-plus-lg':!visibleSecondaryEstimates}"></i>
+        </button>
+      </div>
+
+      <ng-container *ngIf="visibleSecondaryEstimates">
+        <app-summary [period]="1" [categories]="categories"></app-summary>
+        <app-summary [period]="2" [categories]="categories"></app-summary>
+      </ng-container>
+    </ng-container>
+
+    <!-- <div class="card mb-2">
+      <div class="card-header d-flex align-items-center bg-success text-light">
+        <h6 class="text-secondary mb-0 text-light">
+          Estimación anual
+        </h6>
+        <i class="bi bi-calendar-check"></i>
+      </div>
+      <div class="card-body">
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Total ingresos
+            <span class="badge bg-success rounded-pill">2100 €</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Total gastos
+            <span class="badge bg-danger rounded-pill">1700 €</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Utilidad o Pérdida
+            <span class="badge bg-success rounded-pill">400 €</span>
+          </li>
+        </ul>
+      </div>
+    </div> -->
+
+    <!-- <div class="card mb-2">
+      <div class="card-header d-flex align-items-center bg-secondary text-light">
+        <h6 class="text-secondary mb-0 text-light">
+          Estimación cuatrimestral
+        </h6>
+        <i class="bi bi-calendar-check"></i>
+      </div>
+      <div class="card-body">
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Total ingresos
+            <span class="badge bg-success rounded-pill">2100 €</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Total gastos
+            <span class="badge bg-danger rounded-pill">1700 €</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Utilidad o Pérdida
+            <span class="badge bg-success rounded-pill">400 €</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card mb-2">
+      <div class="card-header d-flex align-items-center bg-secondary text-light">
+        <h6 class="text-secondary mb-0 text-light">
+          Estimación semestral
+        </h6>
+        <i class="bi bi-calendar-check"></i>
+      </div>
+      <div class="card-body">
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Total ingresos
+            <span class="badge bg-success rounded-pill">2100 €</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Total gastos
+            <span class="badge bg-danger rounded-pill">1700 €</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Utilidad o Pérdida
+            <span class="badge bg-success rounded-pill">400 €</span>
+          </li>
+        </ul>
+      </div>
+    </div> -->
+  </div>
+</c-row>
+
+<pre>{{categories | json}}</pre>

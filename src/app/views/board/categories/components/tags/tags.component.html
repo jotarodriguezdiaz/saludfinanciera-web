@@ -1,0 +1,33 @@
+<app-spinner [active]="spinner"></app-spinner>
+
+<button (click)="openModal()" class="btn btn-icon p-0" cTooltip="{{ 'addTag' | translate}}">
+  <span class="bi bi-plus-square-fill text-secondary"></span>
+</button>
+
+<!-- Tags  -->
+<c-modal id="tags" [visible]="visible" alignment="center" size="lg" (visibleChange)="handleModal($event)">
+  <c-modal-header>
+    <h5 cModalTitle>{{ 'etiquetas' | translate }} </h5>
+
+    <button (click)="openModal()" cButtonClose white></button>
+  </c-modal-header>
+  <c-modal-body>    
+
+    <ng-select [items]="[]" 
+               placeholder="Buscar..."
+               [addTag]="addTagFn" 
+               [hideSelected]="true" 
+               [multiple]="true" 
+               bindLabel="name" 
+               (add)="add($event)"               
+               (remove)="remove($event)"
+               [(ngModel)]="selected">
+    </ng-select>
+
+  </c-modal-body>
+  <c-modal-footer>
+    <button (click)="openModal()" cButton color="secondary">
+      {{ 'cerrar' | translate }}
+    </button>
+  </c-modal-footer>
+</c-modal>

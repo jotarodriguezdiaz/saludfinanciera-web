@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class LoginService {
-  private url = environment.urlGateway + 'identity';
+  private url = environment.urlIdentity;
 
   constructor(private http: HttpClient) { }
 

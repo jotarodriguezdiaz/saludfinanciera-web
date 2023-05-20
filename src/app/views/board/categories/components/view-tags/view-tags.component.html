@@ -1,0 +1,39 @@
+<button class="btn btn-primary btn-sm d-flex" (click)="open(content)">
+  <i class="bi bi-tag me-1"></i>
+  <span>{{ 'viewEtiquetas' | translate }}</span>
+</button>
+
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h5 class="modal-title" id="modal-basic-title">{{ 'viewEtiquetas' | translate }}</h5>    
+
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+	</div>
+	<div class="modal-body">
+			<div class="mb-3">
+        <ng-select
+        [items]="tags"
+        placeholder="Buscar..."
+        bindLabel="name"       
+        bindValue="tagId"
+        [multiple]="true"
+        [hideSelected]="true"              
+        [closeOnSelect]="false"                    
+        [(ngModel)]="selected"          
+        (add)="add($event)"               
+        (remove)="remove($event)">
+
+          <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+              <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"/> {{item.name}}
+          </ng-template>
+          
+        </ng-select>
+      </div>			
+	</div>
+	<div class="modal-footer">		
+    <button (click)="modal.close()" cButton color="secondary">
+      {{ 'cerrar' | translate }}
+    </button>   
+	</div>
+</ng-template>
+

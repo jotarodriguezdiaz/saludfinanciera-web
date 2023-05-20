@@ -1,0 +1,1 @@
+export { GetBoardResult } from './get-board.result';

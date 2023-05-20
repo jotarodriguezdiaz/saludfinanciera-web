@@ -1,0 +1,53 @@
+nav{
+    background-color: #5873a038;
+}
+.category-title{
+    font-weight: 600;
+}
+
+table{
+    font-weight: 500;
+    td{
+        vertical-align: middle;
+        .badge{
+            min-height: 23px;
+        }
+    }
+}
+
+.container-menu{
+    position: relative;
+    top: 4px;
+}
+
+.container-flex-menu{
+    justify-content: space-between;
+    .input-search-categories{
+        width:50%;
+    }        
+}
+
+.container-menu-entries{
+    height: 24px;
+    position:relative;    
+}
+
+.container-entries{
+    td, th{
+        padding: 2px 8px !important;
+    }
+}
+
+.card-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+c-card-header{
+    background: #d5dbe6;
+}
+
+.category-title-summary{
+    font-size:14px !important;
+}

@@ -51,18 +51,18 @@ export function loadTranslationsFactory(i18nService: I18nService) {
   ]
 })
 export class CoreModule {
-  constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
-    if (parentModule) {
-      throw new Error(
-        'CoreModule is already loaded. Import it in the AppModule only.'
-      );
-    }
-  }
+  // constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
+  //   if (parentModule) {
+  //     throw new Error(
+  //       'CoreModule is already loaded. Import it in the AppModule only.'
+  //     );
+  //   }
+  // }
 
-  static forRoot() {
-    return {
-      ngModule: CoreModule,
-      providers: [I18nService]
-    };
-  }
+  // static forRoot() {
+  //   return {
+  //     ngModule: CoreModule,
+  //     providers: [I18nService]
+  //   };
+  // }
 }

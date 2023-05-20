@@ -1,0 +1,164 @@
+<app-spinner [active]="spinner"></app-spinner>
+
+<button (click)="openModalCreate()" type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal">
+  <ng-container *ngIf="!modeSummary" class="ms-1">
+    <i class="bi bi-plus-lg me-1"></i> 
+    <span >{{ 'addGasto' | translate }}</span>
+  </ng-container>
+ 
+  <ng-container *ngIf="modeSummary" class="ms-1">
+    <i class="bi bi-plus-lg" cTooltip="{{ 'addGasto' | translate }}"></i> 
+  </ng-container>
+</button>
+
+<!-- Añadir nuevo expense  -->
+<c-modal id="createModal" [visible]="visible" alignment="center" size="lg" (visibleChange)="handleCreateChange($event)">
+  <form [formGroup]="form" #customStylesForm="ngForm" (ngSubmit)="save()" [gutter]="3" novalidate cForm
+    [validated]="validated">
+    <c-modal-header>
+      <h5 cModalTitle>{{ 'crearNuevoGasto' | translate }} </h5>
+
+      <button (click)="openModalCreate()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+      <div class="needs-validation">
+        <div class="row">
+          <c-col [md]="6">
+            <label cLabel for="name">{{ 'nombre' | translate }} <span
+                class="text-danger fs-5 fw-bold ps-2">*</span></label>
+            <input cFormControl formControlName="name" id="name" required type="text"
+              [placeholder]="'nombre' | translate" />
+            <div *ngIf="f.name?.invalid && f.name?.touched" class="small text-danger">
+              <small *ngIf="f.name?.errors?.required">{{ 'elNombreEsObligatorio' | translate }}.</small>
+              <small *ngIf="f.name?.errors?.maxLength">{{ 'elNombreEsObligatorio' | translate }}</small>
+            </div>
+          </c-col>
+        </div>
+
+        <div class="row mt-2">
+          <c-col [md]="12">
+            <label cLabel for="description">{{ 'descripcion' | translate }} </label>
+            <textarea cFormControl formControlName="description" id="description" required type="text"
+              [placeholder]="'descripcion' | translate"></textarea>
+            <div *ngIf="f.description?.invalid && f.description.touched" class="small text-danger">
+              <small *ngIf="f.description.errors?.maxLength">{{ 'descripcionMaximoCaracteres' | translate }}</small>
+            </div>
+          </c-col>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-6">
+            <label cLabel for="amount">{{ 'amount' | translate }} </label>
+            <span class="text-danger fs-5 fw-bold ps-2">*</span>
+
+            <c-input-group>
+              <input autoComplete="amount" cFormControl [placeholder]="'amountEjemplo' | translate" id="amount"
+                type="number" formControlName="amount" step="0.01" min="0" required />
+            </c-input-group>
+
+            <div class="small text-danger" *ngIf="f.amount?.errors?.required && f.amount?.touched">
+              {{ 'amountObligatorio' | translate }}
+            </div>
+          </div>
+
+          <div class="col-6">
+            <label cLabel for="amount">{{ 'periodo' | translate }} </label>
+            <span class="text-danger fs-5 fw-bold ps-2">*</span>
+
+            <c-input-group>
+              <select class="form-select" formControlName="period">
+                <option [value]="null">{{'seleccionaPeriodo' | translate }}</option>
+                <option [value]="period.Monthly">{{'mensual' | translate }}</option>
+                <option [value]="period.Quarterly">{{'cuatriMensual' | translate }}</option>
+                <option [value]="period.Biannual">{{'bianual' | translate }}</option>
+                <option [value]="period.Annual">{{'anual' | translate }}</option>
+              </select>
+            </c-input-group>
+
+            <div class="small text-danger" *ngIf="f.period?.errors?.required && f.period?.touched">
+              {{ 'periodObligatorio' | translate }}
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col">
+            <label>{{ 'indicaSiEsImprescindible' | translate}} <span
+                class="text-danger fs-5 fw-bold ps-2">*</span></label>
+
+            <div class="ms-2 mt-1">
+              <div class="form-check">
+                <input formControlName="expendable" class="form-check-input" type="radio" name="expendable"
+                  id="expendable" [value]="true" [checked]="f.expendable.value === true">
+                <label class="form-check-label" for="expendable">
+                  {{ 'imprescindible' | translate }}
+                </label>
+              </div>
+              <div class="form-check">
+                <input formControlName="expendable" class="form-check-input" type="radio" name="expendable"
+                  id="unExpendable" [value]="false" [checked]="f.expendable.value === false">
+                <label class="form-check-label" for="unExpendable">
+                  {{ 'prescindible' | translate }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col">
+            <label>{{ 'indicaSiEsFijoOVariable' | translate}} <span
+                class="text-danger fs-5 fw-bold ps-2">*</span></label>
+                
+            <div class="ms-2 mt-1">
+              <div class="form-check">
+                <input formControlName="variable" class="form-check-input" type="radio" name="variable" id="variable"
+                  [value]="true" [checked]="f.variable.value === true">
+                <label class="form-check-label" for="variable">
+                  {{ 'variable' | translate }}
+                </label>
+              </div>
+              <div class="form-check">
+                <input formControlName="variable" class="form-check-input" type="radio" name="variable" id="fijo"
+                  [value]="false" [checked]="f.variable.value === false">
+                <label class="form-check-label" for="fijo">
+                  {{ 'fijo' | translate }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-6">
+            <label cLabel for="amount">{{ 'indicaNivelImportancia' | translate }} </label>
+            <span class="text-danger fs-5 fw-bold ps-2">*</span>
+
+            <c-input-group>
+              <select class="form-select" formControlName="relevance">
+                <option [value]="null">{{'seleccionaNivelImportancia' | translate }}</option>
+                <option [value]="relevance.VeryLow">{{'muyBajo' | translate }}</option>
+                <option [value]="relevance.Low">{{'bajo' | translate }}</option>
+                <option [value]="relevance.Medium">{{'medio' | translate }}</option>
+                <option [value]="relevance.High">{{'alto' | translate }}</option>
+                <option [value]="relevance.VeryHigh">{{'muyAlto' | translate }}</option>
+              </select>
+            </c-input-group>
+
+            <div class="small text-danger" *ngIf="f.relevance?.errors?.required && f.relevance?.touched">
+              {{ 'relevanceObligatorio' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </c-modal-body>
+    <c-modal-footer>
+      <button (click)="openModalCreate()" cButton color="secondary">
+        {{ 'cerrar' | translate }}
+      </button>
+      <button cButton color="success" (click)="save()">{{ 'guardar' | translate }}</button>
+    </c-modal-footer>
+  </form>
+
+</c-modal>

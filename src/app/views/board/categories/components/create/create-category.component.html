@@ -1,0 +1,54 @@
+<app-spinner [active]="spinner"></app-spinner>
+
+<button (click)="openModalCreate()" type="button" class="btn btn-success btn-sm" data-bs-toggle="modal">
+  <i class="bi bi-bookmark me-1"></i>
+  {{ 'createCategory' | translate }}
+</button>
+
+
+<!-- Añadir nueva categoría -->
+<c-modal id="createModal" [visible]="visible" alignment="center" size="lg" (visibleChange)="handleCreateChange($event)">
+  <form [formGroup]="form" #customStylesForm="ngForm" (ngSubmit)="save()" [gutter]="3" novalidate cForm
+    [validated]="validated">
+    <c-modal-header>
+      <h5 cModalTitle>{{ 'crearNuevaCategoria' | translate }} </h5>
+
+      <button (click)="openModalCreate()" cButtonClose white></button>
+    </c-modal-header>
+    <c-modal-body>
+      <div class="needs-validation">
+        <div class="row">
+          <c-col [md]="6">
+            <label cLabel for="name">{{ 'nombre' | translate }} <span
+                class="text-danger fs-5 fw-bold ps-2">*</span></label>
+            <input cFormControl formControlName="name" id="name" required type="text"
+              [placeholder]="'nombre' | translate" />
+            <div *ngIf="f.name?.invalid && f.name?.touched" class="small text-danger">
+              <small *ngIf="f.name?.errors?.required">{{ 'elNombreEsObligatorio' | translate }}.</small>
+              <small *ngIf="f.name?.errors?.maxLength">{{ 'elNombreEsObligatorio' | translate }}</small>
+            </div>
+          </c-col>
+        </div>
+
+        <div class="row mt-2">
+          <c-col [md]="12">
+            <label cLabel for="description">{{ 'descripcion' | translate }} </label>
+            <textarea cFormControl formControlName="description" id="description" required type="text"
+              [placeholder]="'descripcion' | translate"></textarea>
+            <div *ngIf="f.description?.invalid && f.description.touched" class="small text-danger">
+              <small *ngIf="f.description.errors?.maxLength">{{ 'descripcionMaximoCaracteres' | translate }}</small>
+            </div>
+          </c-col>
+        </div>
+      </div>
+
+    </c-modal-body>
+    <c-modal-footer>
+      <button (click)="openModalCreate()" cButton color="secondary">
+        {{ 'cerrar' | translate }}
+      </button>
+      <button cButton color="success" (click)="save()">{{ 'guardar' | translate }}</button>
+    </c-modal-footer>
+  </form>
+
+</c-modal>

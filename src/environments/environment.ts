@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   allowedDomain: 'localhost',
-  urlGateway: 'http://localhost:5003/api/',
-  urlFinance: 'http://localhost:5054/api/'
+  urlIdentity: 'http://localhost:5003/api/identity',
+  urlGateway: 'http://localhost:5003/gateway'
 };
 
 /*

@@ -1,0 +1,52 @@
+<div class="card mb-2">
+  <div class="card-header d-flex align-items-center justify-content-between bg-success text-light">
+    <h6 class="text-secondary mb-0 text-light">
+      {{ 'estimacion' | translate}}
+      <ng-container [ngSwitch]="period">
+        <span *ngSwitchCase="periodEnum.Monthly">{{ 'mensual' | translate }}</span>
+        <span *ngSwitchCase="periodEnum.Quarterly">{{ 'cuatriMensual' | translate }}</span>
+        <span *ngSwitchCase="periodEnum.Biannual">{{ 'bianual' | translate }}</span>
+        <span *ngSwitchCase="periodEnum.Annual">{{ 'anual' | translate }}</span>
+      </ng-container>
+    </h6>
+    <i class="bi bi-calendar-check"></i>
+  </div>
+  <div class="card-body">
+    <ul class="list-group">
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{ 'totalIngresos' | translate }}
+        <span class="badge bg-success rounded-pill">
+          <i class="bi bi-arrow-up-short"></i>
+          {{totalIncomes}} €
+        </span>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{ 'totalGastos' | translate }}
+        <span class="badge bg-danger rounded-pill">
+          <i class="bi bi-arrow-down-short"></i>
+          {{totalExpenses}} €
+        </span>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <ng-container *ngIf="isBenefit; else isLoss" class="text-success">
+          <span>{{ 'utilidad' | translate }}</span>
+
+          <span class="badge rounded-pill bg-success">
+            <i class="bi bi-graph-up-arrow me-1"></i>
+            {{total}} €
+          </span>
+        </ng-container>
+
+        <ng-template #isLoss>
+          <span class="text-danger">
+            {{ 'perdida' | translate }}
+          </span>
+          <span class="badge rounded-pill bg-danger">
+            <i class="bi bi-graph-down-arrow me-1"></i>
+            {{total}} €
+          </span>
+        </ng-template>
+      </li>
+    </ul>
+  </div>
+</div>

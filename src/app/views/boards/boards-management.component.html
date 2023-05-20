@@ -1,0 +1,40 @@
+<app-spinner [active]="spinner"></app-spinner>
+
+<c-container breakpoint="lg" class="h-auto">
+  <div class="row my-3">
+    <div class="col-12">
+      <app-create-board (boardCreated)="loadBoards()"></app-create-board>
+    </div>
+  </div>
+
+  <c-row class="no-select">
+    <c-col xs>
+      <c-card class="mb-4">
+        <c-card-header>{{ 'misTableros' | translate }}</c-card-header>
+        <c-card-body>
+          <div class="row">
+            <div *ngFor="let board of boards" class="col-3 mb-3">
+              <c-card>
+                <app-spinner [active]="board.spinner"></app-spinner>
+
+                <img cCardImg="top" loading="lazy" src="./assets/images/board.jpg" />
+                <div class="menu-buttons">
+                  <app-update-board [id]="board.boardId" (boardUpdated)="loadBoards()"></app-update-board>
+                  <button type="button" class="btn-close" aria-label="Cerrar" (click)="deleteBoard(board)"></button>
+                </div>
+
+                <c-card-body>
+                  <h5 cCardTitle>{{ board.name }}</h5>
+                  <p cCardText>
+                    {{ board.description }}
+                  </p>
+                  <a cButton class="btn-sm" variant="outline" color="success" cCol="7" (click)="go(board)">{{'entrar'| translate}}</a>
+                </c-card-body>
+              </c-card>
+            </div>
+          </div>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
+</c-container>

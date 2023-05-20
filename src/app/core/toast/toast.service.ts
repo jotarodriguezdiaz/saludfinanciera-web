@@ -15,4 +15,8 @@ export class ToastService {
 	clear() {
 		this.toasts.splice(0, this.toasts.length);
 	}
+
+	success = (message: string) => this.show(message, { classname: 'bg-success text-light', delay: 3000 });
+	danger = (message: string) => this.show(message, { classname: 'bg-danger text-light', delay: 3000 });
+	warning = (message: string) => this.show(message, { classname: 'bg-warning text-light', delay: 3000 });
 }

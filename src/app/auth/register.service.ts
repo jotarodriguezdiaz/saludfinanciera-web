@@ -9,7 +9,7 @@ import { RegistrationRequest } from './registration.request';
   providedIn: 'root'
 })
 export class RegisterService {
-  private url = environment.urlGateway + 'identity';
+  private url = environment.urlIdentity;
 
   constructor(private http: HttpClient) { }
 

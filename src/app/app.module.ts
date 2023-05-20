@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -51,7 +51,8 @@ import { environment } from 'src/environments/environment';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastsContainer } from './core/toast/toasts-container.component';
-import { CoreModule } from './core/core.module';
+import { BoardsModule } from './views/boards/boards.module';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -73,6 +74,8 @@ export function tokenGetter() {
     ...APP_CONTAINERS
   ],
   imports: [
+    BoardsModule,
+
     HttpClientModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -101,7 +104,7 @@ export function tokenGetter() {
     ListGroupModule,
     CardModule,
     ToastsContainer,
-    CoreModule.forRoot(),
+    // CoreModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -112,6 +115,11 @@ export function tokenGetter() {
     NgbModule
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true, // Esto es necesario para permitir múltiples interceptores
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,

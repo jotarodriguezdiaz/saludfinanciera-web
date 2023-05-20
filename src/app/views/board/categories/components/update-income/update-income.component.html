@@ -1,0 +1,85 @@
+<button type="button" class="btn btn-link btn-edit btn-sm" aria-label="Cerrar" (click)="openModalUpdate()">
+  <i class="bi bi-pencil"></i>
+</button>
+
+<!-- Actualizar nuevo income  -->
+<c-modal id="createModal" [visible]="visible" alignment="center" size="lg" (visibleChange)="handleCreateChange($event)">
+  <form [formGroup]="form" #customStylesForm="ngForm" (ngSubmit)="save()" [gutter]="3" novalidate cForm
+    [validated]="validated">
+    <c-modal-header>
+      <h5 cModalTitle>{{ 'modificarNuevoIngreso' | translate }} </h5>
+
+      <button (click)="openModalUpdate()" cButtonClose white></button>
+    </c-modal-header>
+    <c-modal-body>
+      <div class="needs-validation">
+        <div class="row">
+          <c-col [md]="6">
+            <label cLabel for="name">{{ 'nombre' | translate }} <span
+                class="text-danger fs-5 fw-bold ps-2">*</span></label>
+            <input cFormControl formControlName="name" id="name" required type="text"
+              [placeholder]="'nombre' | translate" />
+            <div *ngIf="f.name?.invalid && f.name?.touched" class="small text-danger">
+              <small *ngIf="f.name?.errors?.required">{{ 'elNombreEsObligatorio' | translate }}.</small>
+              <small *ngIf="f.name?.errors?.maxLength">{{ 'elNombreEsObligatorio' | translate }}</small>
+            </div>
+          </c-col>
+        </div>
+
+        <div class="row mt-2">
+          <c-col [md]="12">
+            <label cLabel for="description">{{ 'descripcion' | translate }} </label>
+            <textarea cFormControl formControlName="description" id="description" required type="text"
+              [placeholder]="'descripcion' | translate"></textarea>
+            <div *ngIf="f.description?.invalid && f.description.touched" class="small text-danger">
+              <small *ngIf="f.description.errors?.maxLength">{{ 'descripcionMaximoCaracteres' | translate }}</small>
+            </div>
+          </c-col>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-3">
+            <label cLabel for="amount">{{ 'amount' | translate }} </label>
+            <span class="text-danger fs-5 fw-bold ps-2">*</span>
+
+            <c-input-group>
+              <input autoComplete="amount" cFormControl [placeholder]="'amountEjemplo' | translate" id="amount"
+                type="number" formControlName="amount" step="0.01" min="0" required />
+            </c-input-group>
+
+            <div class="small text-danger" *ngIf="f.amount?.errors?.required && f.amount?.touched">
+              {{ 'amountObligatorio' | translate }}
+            </div>
+          </div>
+
+          <div class="col-3">
+            <label cLabel for="amount">{{ 'periodo' | translate }} </label>
+            <span class="text-danger fs-5 fw-bold ps-2">*</span>
+
+            <c-input-group>
+              <select class="form-select" formControlName="period">
+                <option [value]="null">{{'seleccionaPeriodo' | translate }}</option>
+                <option [value]="period.Monthly">{{'mensual' | translate }}</option>
+                <option [value]="period.Quarterly">{{'cuatriMensual' | translate }}</option>
+                <option [value]="period.Biannual">{{'bianual' | translate }}</option>
+                <option [value]="period.Annual">{{'anual' | translate }}</option>
+              </select>
+            </c-input-group>
+
+            <div class="small text-danger" *ngIf="f.period?.errors?.required && f.period?.touched">
+              {{ 'periodObligatorio' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </c-modal-body>
+    <c-modal-footer>
+      <button (click)="openModalUpdate()" cButton color="secondary">
+        {{ 'cerrar' | translate }}
+      </button>
+      <button cButton color="success" (click)="save()">{{ 'guardar' | translate }}</button>
+    </c-modal-footer>
+  </form>
+
+</c-modal>

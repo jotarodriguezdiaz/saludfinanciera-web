@@ -202,6 +202,7 @@ export class CategoriesComponent implements OnInit {
         // Actualizar la propiedad total y isPositive
         category.total = totalIncomes + totalExpenses;
         category.isPositive = category.total >= 0;
+        this.categories = [...this.categories];
     }
 
     deleteCategory(category: GetCategoryResult) {

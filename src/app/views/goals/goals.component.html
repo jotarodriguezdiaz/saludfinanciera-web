@@ -1,0 +1,89 @@
+<app-spinner [active]="spinner"></app-spinner>
+
+<c-container breakpoint="lg" class="h-auto">
+    <c-row class="no-select mt-3">
+        <c-col xs>
+            <c-card class="mb-4 position-relative">
+                <app-spinner [active]="spinnerGoals"></app-spinner>
+
+                <c-card-header>
+                    <h4 class="m-0 text-secondary">
+                        {{ 'misObjetivos' | translate }}
+                    </h4>
+                </c-card-header>
+                <c-card-body>
+                    <div class="row">
+                        <div class="col-6 col-lg-6">
+                            <label cLabel for="board">{{ 'board' | translate }} </label>
+                            <span class="text-danger fs-5 fw-bold ps-2">*</span>
+
+                            <c-input-group>
+                                <select class="form-select col-12 col-lg-6" [(ngModel)]="selectedBoard"
+                                    (change)="loadGoals()">
+                                    <option [ngValue]="null">{{ 'seleccionaBoard' | translate }}</option>
+                                    <option *ngFor="let item of boards" [ngValue]="item">
+                                        {{ item.name }} - {{ item.description}}
+                                    </option>
+                                </select>
+                            </c-input-group>
+                        </div>
+                    </div>
+
+                    <ng-container>
+                        <div [hidden]="spinnerGoals" class="row my-3">
+                            <div *ngIf="canCreateGoal" class="col-12">
+                                <app-create-goal [boardId]="selectedBoard!.boardId"
+                                    (goalCreated)="loadGoals()"></app-create-goal>
+                            </div>
+                        </div>
+
+                        <div *ngIf="goals.length === 0" class="alert alert-info mb-0">
+                            {{ 'noTienesNingunObjetivoCreado'|translate }}
+                        </div>
+
+                        <div class="row" *ngIf="goals.length > 0">
+                            <c-col *ngFor="let goal of goals" md="6" sm="12" class="my-2 position-relative">
+                                <c-widget-stat-b [title]="goal.description" value="{{goal.completionPercentage}}%">                                    
+                                    <p class="mb-0 mt-2">Importe: <span
+                                        class="text-secondary fw-bolder">{{goal.cost}}%</span></p>
+                                    
+                                    <p>Porcentaje asignado: <span
+                                            class="text-secondary fw-bolder">{{goal.percentageAssigned}}%</span></p>
+
+                                    <button type="button" class="btn-close button-delete-goal" aria-label="Cerrar"
+                                        (click)="deleteGoal(goal)"></button>
+                                    <app-spinner [active]="goal.spinner"></app-spinner>
+
+                                    <div class="mt-2 text-secondary">
+                                        <span class="me-2">Fecha inicio</span>
+                                        <span class="fw-bolder">{{goal.createdDate | date:'dd/MM/yyyy'}}</span>
+                                    </div>
+                                    <div class="text-secondary">
+                                        <span class="me-2">Fecha estimada</span>
+                                        <span class="fw-bolder">{{goal.dateEstimated | date:'dd/MM/yyyy'}}</span>
+                                    </div>
+
+                                    <p class="mb-0 mt-2 text-secondary"><small>Progreso</small></p>
+                                    <c-progress class="my-2" thin>
+                                        <c-progress-bar [value]="goal.completionPercentage"
+                                            color="success"></c-progress-bar>
+                                    </c-progress>
+
+                                    <p class="alert alert-success mt-3 p-3" [innerHTML]="goal.message"
+                                        style="text-align: justify;"></p>
+
+                                    <button type="button" class="btn btn-success btn-sm float-end mt-1"
+                                        data-bs-toggle="modal">
+                                        <i class="bi bi-eye me-1"></i>
+                                        <span>Abrir</span>
+                                    </button>
+                                </c-widget-stat-b>
+                            </c-col>
+                        </div>
+                    </ng-container>
+
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+</c-container>

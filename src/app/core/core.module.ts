@@ -8,7 +8,7 @@ import { I18nService } from './i18n/i18n.service';
 import { TranslatePipe } from './i18n/translate.pipe';
 
 export function loadTranslationsFactory(i18nService: I18nService) {
-  return () => i18nService.loadTranslations('es').toPromise();
+  return () => i18nService.loadTranslations().toPromise();
 }
 
 @NgModule({

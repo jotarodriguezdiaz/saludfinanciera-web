@@ -7,10 +7,14 @@
     </div>
   </div>
 
-  <c-row class="no-select">
+  <c-row *ngIf="boards.length > 0" class="no-select">
     <c-col xs>
       <c-card class="mb-4">
-        <c-card-header>{{ 'misTableros' | translate }}</c-card-header>
+        <c-card-header>
+          <h4 class="m-0 text-secondary">
+            {{ 'misTableros' | translate }}
+          </h4>
+        </c-card-header>
         <c-card-body>
           <div class="row">
             <div *ngFor="let board of boards" class="col-12 col-md-6 col-lg-3 mb-3">
@@ -28,10 +32,56 @@
                   <p cCardText>
                     {{ board.description }}
                   </p>
-                  <a cButton class="btn-sm" variant="outline" color="success" cCol="7" (click)="go(board)">{{'entrar'| translate}}</a>
+                  <a cButton class="btn-sm" variant="outline" color="success" cCol="7" (click)="go(board)">{{'entrar'|
+                    translate}}</a>
                 </c-card-body>
               </c-card>
             </div>
+          </div>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
+
+  <c-row class="no-select">
+    <c-col xs>
+      <c-card class="mb-4">
+        <c-card-header>
+          <h4 class="m-0 text-secondary">{{ 'plantillasDisponibles' | translate }}</h4>
+        </c-card-header>
+        <c-card-body>
+          <div class="row">
+            <div class="col-12 col-md-6 mb-3">
+              <div class="card text-bg-secondary">
+                <img src="./assets/images/board2.jpg" class="card-img" alt="...">
+                <div class="card-img-overlay">
+                  <div class="container-template">
+                    <h5 class="card-title">{{ 'crearNuevoTemplateBasico' | translate }}</h5>
+                    <p class="card-text">{{ 'plantillaBasica' | translate }}</p>
+                  </div>
+
+                  <a cButton class="btn btn-create-template" color="success" cCol="7"
+                    (click)="createTemplate()">{{'crear'| translate}}</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-3">
+              <div class="card text-bg-secondary">
+                <img src="./assets/images/holiday.jpg" class="card-img" alt="...">
+                <div class="card-img-overlay">
+                  <div class="container-template">
+                    <h5 class="card-title">{{ 'crearNuevoTemplateBasico' | translate }}</h5>
+                    <p class="card-text">{{ 'plantillaBasica' | translate }}</p>
+                    <!-- <p class="card-text">Last updated 3 mins ago</p> -->
+                  </div>
+
+                  <a cButton class="btn btn-create-template" color="success" cCol="7"
+                    (click)="createTemplate()">{{'crear'| translate}}</a>
+                </div>
+              </div>
+            </div>
+
           </div>
         </c-card-body>
       </c-card>

@@ -1,3 +1,5 @@
+<app-spinner [active]="spinner"></app-spinner>
+
 <app-create-category [boardId]="boardId" (categoryCreated)="loadCategories()"></app-create-category>
 
 <nav class="navbar navbar-dark my-3">
@@ -9,7 +11,7 @@
 
         <app-view-categories [categories]="categories" class="me-2"></app-view-categories>
 
-        <app-view-tags [tags]="setTags" class="me-2"></app-view-tags>
+        <app-view-tags [tags]="setTags" class="d-none d-sm-block me-2"></app-view-tags>
 
         <app-view-periods [periods]="periods" class="me-2"></app-view-periods>
       </div>
@@ -61,7 +63,7 @@
             </div>
           </c-card-header>
           <c-card-body>
-            <table [hover]="true" [responsive]="true" [striped]="true" cTable class="mb-0 border container-entries ">
+            <table [hover]="true" [responsive]="true" [striped]="true" cTable class="mb-0 border container-entries overflow-hidden">
               <thead cTableColor="dark">
                 <tr>
                   <th>{{ 'nombre' | translate }}</th>
@@ -104,7 +106,7 @@
                         (created)="updateIncomeTags(income.tags, $event)"></app-tags>
                     </td>
                     <td *ngIf="!modeSummary"></td>
-                    <td *ngIf="!modeSummary" class="text-center text-success">
+                    <td *ngIf="!modeSummary" class="text-center small text-success">
                       <div [ngSwitch]="income.period">
                         <div *ngSwitchCase="0">{{ 'mensual' | translate }}</div>
                         <div *ngSwitchCase="1">{{ 'cuatriMensual' | translate }}</div>
@@ -112,8 +114,8 @@
                         <div *ngSwitchCase="3">{{ 'anual' | translate }}</div>
                       </div>
                     </td>
-                    <td class="text-center text-success">
-                      {{ income.amount }} €
+                    <td class="small text-end text-success fw-bold">
+                      <span class="pe-3"> {{ income.amount }} €</span>                      
                     </td>
                     <td class="py-0">
                       <div class="container-menu-entries">
@@ -122,7 +124,7 @@
                           style="top:-4px"></app-update-income>
 
                         <button type="button" class="btn-close" aria-label="Cerrar"
-                          (click)="deleteIncome(income.incomeId, category)"></button>
+                          (click)="deleteIncome(income.incomeId, category)" style="font-size: 12px;"></button>
                       </div>
                     </td>
                   </tr>
@@ -135,9 +137,9 @@
                       style="min-width:200px">
                       {{ expense.name }}
                     </td>
-                    <td *ngIf="!modeSummary" class="text-center small text-expense">
+                    <td *ngIf="!modeSummary" class="text-center small text-primary-2">
                       <ng-container *ngIf="expense.variable; else notVariable">
-                        <i class="bi bi-reception-3"></i> {{ 'variable' | translate }}
+                        <i class="bi bi-shuffle"></i> {{ 'variable' | translate }}
                       </ng-container>
                       <ng-template #notVariable>
                         <i class="bi bi-infinity"></i> {{ 'fijo' | translate }}
@@ -152,7 +154,7 @@
                         (created)="updateExpenseTags(expense.tags, $event)"></app-tags>
                     </td>
                     <td *ngIf="!modeSummary" class="text-center text-danger">
-                      <div [ngSwitch]="expense.relevance" class="small text-expense">
+                      <div [ngSwitch]="expense.relevance" class="small text-primary-2">
                         <div *ngSwitchCase="0"><i class="bi bi-chevron-double-down"></i> {{ 'muyBaja' | translate }}
                         </div>
                         <div *ngSwitchCase="1"><i class="bi bi-chevron-down"></i> {{ 'baja' | translate }}</div>
@@ -162,7 +164,7 @@
                         </div>
                       </div>
                     </td>
-                    <td *ngIf="!modeSummary" class="text-center small text-expense">
+                    <td *ngIf="!modeSummary" class="text-center small text-primary-2">
                       <div [ngSwitch]="expense.period">
                         <div *ngSwitchCase="0">{{ 'mensual' | translate }}</div>
                         <div *ngSwitchCase="1">{{ 'cuatriMensual' | translate }}</div>
@@ -171,8 +173,8 @@
                       </div>
                     </td>
 
-                    <td class="text-center small text-danger">
-                      {{ expense.amount }} €
+                    <td class="text-end small text-primary-2 fw-bold">
+                      <span class="pe-3">- {{ expense.amount }} €</span>
                     </td>
 
                     <td class="py-0">
@@ -182,7 +184,7 @@
                           style="top:-4px"></app-update-expense>
 
                         <button type="button" class="btn-close" aria-label="Cerrar"
-                          (click)="deleteExpense(expense.expenseId, category)"></button>
+                          (click)="deleteExpense(expense.expenseId, category)" style="font-size: 12px;"></button>
                       </div>
                     </td>
                   </tr>
@@ -194,9 +196,8 @@
                   <td *ngIf="!modeSummary"></td>
                   <td *ngIf="!modeSummary"></td>
                   <td class="text-end p-1 pe-2"><b>Total</b></td>
-                  <td [ngClass]="{'text-success': category.isPositive, 'text-danger': !category.isPositive}"
-                    class="text-center text-success fw-bold">
-                    {{ category.total }} €
+                  <td class="small text-end fw-bold">
+                    <span class="p-3" [ngClass]="{'text-success': category.isPositive, 'text-danger': !category.isPositive}">{{ category.total }} €</span>                    
                   </td>
                   <td></td>
                 </tr>
@@ -211,7 +212,7 @@
   <div class="col-md-12 col-lg-3">
     <ng-container *ngIf="categories">
       <div class="d-flex align-items-baseline justify-content-between">
-        <h5>Estimaciones principales</h5>
+        <h5>{{ 'estimacionesPrincipales' | translate }}</h5>
 
         <button (click)="visiblePrimaryEstimates = !visiblePrimaryEstimates" type="button"
           class="btn btn-primary btn-sm btn-minimice">
@@ -225,8 +226,8 @@
       </ng-container>
 
       <div class="d-flex align-items-baseline justify-content-between mt-4">
-        <h5>Estimaciones secundarias</h5>
-
+        <h5>{{ 'estimacionesSecundarias' | translate }}</h5>
+        
         <button (click)="visibleSecondaryEstimates = !visibleSecondaryEstimates" type="button"
           class="btn btn-primary btn-sm btn-minimice">
           <i class="bi"

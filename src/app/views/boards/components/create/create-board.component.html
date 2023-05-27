@@ -27,19 +27,6 @@
               <small *ngIf="f.name?.errors?.maxLength">{{ 'elNombreEsObligatorio' | translate }}</small>
             </div>
           </c-col>
-
-          <c-col [md]="6">
-            <label cLabel for="name">{{ 'porcentajeAhorro' | translate }} <span
-                class="text-danger fs-5 fw-bold ps-2">*</span></label>
-            <input cFormControl formControlName="savingPercentage" id="savingPercentage" required type="number"
-              [placeholder]="'quincePorCiento' | translate" />
-            <div *ngIf="f.savingPercentage?.invalid && f.savingPercentage?.touched" class="small text-danger">
-              <small *ngIf="f.savingPercentage?.errors?.required">{{'porcentajeAhorroObligatotorio' |
-                translate}}</small>
-              <small *ngIf="f.savingPercentage?.errors?.min">{{ 'porcentajeMayorOIgual' | translate }}</small>
-              <small *ngIf="f.savingPercentage?.errors?.max">{{ 'porcentajeMenorOIgual' | translate }}</small>
-            </div>
-          </c-col>
         </div>
 
         <div class="row mt-2">

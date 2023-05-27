@@ -26,13 +26,20 @@ const routes: Routes = [
         loadChildren: () =>
           import('./views/boards/boards.module').then((m) => m.BoardsModule),
         canActivate: [AuthGuard]
-      },
+      },      
       {
         path: 'board/:id',
         loadChildren: () =>
           import('./views/board/board.module').then((m) => m.BoardModule),
         canActivate: [AuthGuard]
       },
+      {
+        path: 'objetivos',
+        loadChildren: () =>
+          import('./views/goals/goals.module').then((m) => m.GoalsModule),
+        canActivate: [AuthGuard]
+      },
+
       {
         path: 'dashboard',
         loadChildren: () =>

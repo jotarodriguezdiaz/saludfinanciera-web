@@ -38,8 +38,7 @@ export class CreateBoardComponent {
     private createForm() {
         this.form = this.formBuilder.group({
             name: ['', [Validators.required, Validators.maxLength(50)]],
-            description: ['', [Validators.maxLength(250)]],
-            savingPercentage: ['', [Validators.required, Validators.min(0), Validators.max(100)]]
+            description: ['', [Validators.maxLength(250)]]
         });
     }
 

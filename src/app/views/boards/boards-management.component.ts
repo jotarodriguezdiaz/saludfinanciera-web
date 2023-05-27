@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 export class BoardsManagementComponent {
   boards: GetBoardResult[] = [];
   selectedBoard!: GetBoardResult; // Agregar esta línea
+  spinnerCreateTemplate = false;
 
   spinner = false;
 
@@ -64,4 +65,8 @@ export class BoardsManagementComponent {
   }
 
   go = (board: GetBoardResult) => this.router.navigate(['./board', board.boardId]);
+
+  createTemplate() {
+
+  }
 }

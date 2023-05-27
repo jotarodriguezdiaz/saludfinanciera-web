@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { GetCategoryResult } from '../../models';
 import { EPeriod } from 'src/app/shared/enums/period.enum';
 
@@ -10,16 +10,23 @@ import { EPeriod } from 'src/app/shared/enums/period.enum';
 export class SummaryComponent {
     @Input() period!: EPeriod;
 
-    private _categories: GetCategoryResult[] = [];
-    @Input()
-    set categories(value: GetCategoryResult[]) {
-        this._categories = value;
-        this.calcSummary();
-    }
+    // private _categories: GetCategoryResult[] = [];
+    @Input() categories!: GetCategoryResult[];
+    // set categories(value: GetCategoryResult[]) {
+    //     this._categories = value;
+    //     this.calcSummary();
+    // }
 
-    get categories(): GetCategoryResult[] {
-        return this._categories;
-    }
+    // get categories(): GetCategoryResult[] {
+    //     return this._categories;
+    // }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.categories && changes.categories.currentValue) {
+          this.categories = changes.categories.currentValue;
+          this.calcSummary();
+        }
+      }
 
     periodEnum = EPeriod;
     totalIncomes!: number;

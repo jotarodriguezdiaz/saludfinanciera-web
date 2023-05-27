@@ -1,0 +1,89 @@
+<app-spinner [active]="spinner"></app-spinner>
+
+<button (click)="openModalCreate()" type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal">
+  {{ 'createGoal' | translate }}
+</button>
+
+
+<!-- Añadir nuevo objetivo -->
+<c-modal id="createModal" [visible]="visible" alignment="center" size="lg" (visibleChange)="handleCreateChange($event)">
+  <app-spinner [active]="spinnerSimulate"></app-spinner>
+
+  <form [formGroup]="form" #customStylesForm="ngForm" (ngSubmit)="save()" [gutter]="3" novalidate cForm
+    [validated]="validated">
+    <c-modal-header>
+      <h5 cModalTitle>{{ 'crearNuevoObjetivo' | translate }} </h5>
+
+      <button (click)="openModalCreate()" cButtonClose white></button>
+    </c-modal-header>
+    <c-modal-body>
+      <div class="needs-validation">
+        <div class="row">
+          <c-col [md]="12">
+            <label cLabel for="description">{{ 'descripcion' | translate }} <span
+                class="text-danger fs-5 fw-bold ps-2">*</span></label>
+            <input cFormControl formControlName="description" id="description" required type="text"
+              [placeholder]="'descripcion' | translate" />
+            <div *ngIf="f.description?.invalid && f.description?.touched" class="small text-danger">
+              <small *ngIf="f.description?.errors?.required">{{ 'laDescripcionEsRequerida' | translate }}.</small>
+              <small *ngIf="f.description?.errors?.maxLength">{{ 'elNombreEsObligatorio' | translate }}</small>
+            </div>
+          </c-col>
+
+          <c-col [md]="6" class="mt-2">
+            <label cLabel for="cost">{{ 'indicaImporte' | translate }} <span
+                class="text-danger fs-5 fw-bold ps-2">*</span></label>
+            <input cFormControl formControlName="cost" id="cost" required type="number" placeholder="15000 €" />
+            <div *ngIf="f.cost?.invalid && f.cost?.touched" class="small text-danger">
+              <small *ngIf="f.cost?.errors?.required">{{'costeEsObligatorio' |
+                translate}}</small>
+            </div>
+          </c-col>
+
+          <c-col [md]="6" class="mt-2">
+            <label cLabel for="percentageAssigned">{{ 'porcentajeDestinadoAhorro' | translate }} <span
+                class="text-danger fs-5 fw-bold ps-2">*</span></label>
+            <input cFormControl formControlName="percentageAssigned" id="percentageAssigned" required type="number"
+              placeholder="50" />
+            <div *ngIf="f.percentageAssigned?.invalid && f.percentageAssigned?.touched" class="small text-danger">
+              <small *ngIf="f.percentageAssigned?.errors?.required">{{'porcentajeAhorroObligatotorio' |
+                translate}}</small>
+              <small *ngIf="f.percentageAssigned?.errors?.min">{{ 'porcentajeMayorOIgual' | translate }}</small>
+              <small *ngIf="f.percentageAssigned?.errors?.max">{{ 'porcentajeMenorOIgual' | translate }}</small>
+            </div>
+          </c-col>
+
+          <c-col [md]="3" class="mt-3">
+            <button cButton color="success" (click)="simulate()">{{ 'calcularSimulacion' | translate }}</button>
+          </c-col>
+
+          <c-col *ngIf="simulation" [md]="12" class="p-3">
+            <h5>Resultado de la simulación: </h5>
+            <ng-container *ngIf="simulation.error; else validSimulation">
+              <p class="alert alert-danger" style="text-align: justify;" [innerHTML]="simulation.errorMessage"></p>
+            </ng-container>
+            <ng-template #validSimulation>
+              <p class="text-secondary" style="text-align: justify;" [innerHTML]="simulation.message"></p>
+              <p>
+                <span>Fecha estimada: </span>
+                <span class="text-secondary fw-bolder">{{ simulation.dateEstimated | date:'dd/MM/yyyy' }}</span>
+              </p>
+            </ng-template>
+          </c-col>
+        </div>
+      </div>
+
+    </c-modal-body>
+    <c-modal-footer>
+      <button (click)="openModalCreate()" cButton color="secondary" class="float-start">
+        {{ 'cerrar' | translate }}
+      </button>
+
+      <div class="float-end">
+        <button cButton color="danger" (click)="deactive()" class="me-2">{{ 'desactivar' | translate }}</button>
+        <button [disabled]="!simulation" cButton color="success" (click)="save()">{{ 'guardar' | translate }}</button>
+      </div>
+    </c-modal-footer>
+  </form>
+
+</c-modal>

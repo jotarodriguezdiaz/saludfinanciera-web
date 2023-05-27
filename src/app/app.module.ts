@@ -53,6 +53,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastsContainer } from './core/toast/toasts-container.component';
 import { BoardsModule } from './views/boards/boards.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { CoreModule } from "./core/core.module";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -69,74 +70,74 @@ export function tokenGetter() {
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ...APP_CONTAINERS
-  ],
-  imports: [
-    BoardsModule,
-
-    HttpClientModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    AvatarModule,
-    BreadcrumbModule,
-    FooterModule,
-    DropdownModule,
-    GridModule,
-    HeaderModule,
-    SidebarModule,
-    IconModule,
-    PerfectScrollbarModule,
-    NavModule,
-    ButtonModule,
-    FormModule,
-    UtilitiesModule,
-    ButtonGroupModule,
-    ReactiveFormsModule,
-    SidebarModule,
-    SharedModule,
-    TabsModule,
-    ListGroupModule,
-    ProgressModule,
-    BadgeModule,
-    ListGroupModule,
-    CardModule,
-    ToastsContainer,
-    // CoreModule,
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: tokenGetter,
-        allowedDomains: [environment.allowedDomain],
-        disallowedRoutes: []
-      }
-    }),
-    NgbModule
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true, // Esto es necesario para permitir múltiples interceptores
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
-      multi: true,
-    },
-    {
-      provide: LocationStrategy,
-      useClass: HashLocationStrategy,
-    },
-    {
-      provide: PERFECT_SCROLLBAR_CONFIG,
-      useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG,
-    },
-    IconSetService,
-    Title
-  ],
-  bootstrap: [AppComponent],
+    declarations: [
+        AppComponent,
+        ...APP_CONTAINERS
+    ],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true, // Esto es necesario para permitir múltiples interceptores
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ErrorInterceptor,
+            multi: true,
+        },
+        {
+            provide: LocationStrategy,
+            useClass: HashLocationStrategy,
+        },
+        {
+            provide: PERFECT_SCROLLBAR_CONFIG,
+            useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG,
+        },
+        IconSetService,
+        Title
+    ],
+    bootstrap: [AppComponent],
+    imports: [
+        BoardsModule,
+        HttpClientModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        AvatarModule,
+        BreadcrumbModule,
+        FooterModule,
+        DropdownModule,
+        GridModule,
+        HeaderModule,
+        SidebarModule,
+        IconModule,
+        PerfectScrollbarModule,
+        NavModule,
+        ButtonModule,
+        FormModule,
+        UtilitiesModule,
+        ButtonGroupModule,
+        ReactiveFormsModule,
+        SidebarModule,
+        SharedModule,
+        TabsModule,
+        ListGroupModule,
+        ProgressModule,
+        BadgeModule,
+        ListGroupModule,
+        CardModule,
+        ToastsContainer,
+        // CoreModule,
+        JwtModule.forRoot({
+            config: {
+                tokenGetter: tokenGetter,
+                allowedDomains: [environment.allowedDomain],
+                disallowedRoutes: []
+            }
+        }),
+        NgbModule,
+        CoreModule
+    ]
 })
 export class AppModule {
 }

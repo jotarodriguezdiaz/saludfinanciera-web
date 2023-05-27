@@ -11,6 +11,7 @@ table{
         vertical-align: middle;
         .badge{
             min-height: 23px;
+            line-height: 1.5;
         }
     }
 }
@@ -52,6 +53,6 @@ c-card-header{
     font-size:14px !important;
 }
 
-.text-expense{
-  color: #12649feb !important;
-}
+// .text-expense{
+//   color: #12649feb !important;
+// }

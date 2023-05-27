@@ -8,19 +8,21 @@ import { Observable, ReplaySubject } from 'rxjs';
 export class I18nService {
   private translations: { [key: string]: string } = {};
   private loadedTranslations = new ReplaySubject<void>(1);
-  private currentLanguage: string;
+  private currentLanguage!: string;
+  private defaultLanguage!: string;
 
   constructor(private http: HttpClient) {
-    const savedLanguage = localStorage.getItem('language');
-    this.currentLanguage = savedLanguage || 'es';
-    // TODO: Pendiente cachear el lenguaje preferido por el usuario.
-    // Si uso la siguiente línea tengo un problema proque se pide dos veces y no funciona.
-    // this.loadTranslations(this.currentLanguage).subscribe();
+    this.defaultLanguage = 'es';
   }
 
-  loadTranslations(lang: string): Observable<void> {
+  loadTranslations(): Observable<void> {    
+    if (!this.currentLanguage) {
+      const savedLanguage = localStorage.getItem('language');
+      this.currentLanguage = savedLanguage || this.defaultLanguage;
+    }
+
     return new Observable((observer) => {
-      this.http.get(`assets/i18n/${lang}.json`).subscribe((data: any) => {
+      this.http.get(`assets/i18n/${this.currentLanguage}.json`).subscribe((data: any) => {
         this.translations = data;
         this.loadedTranslations.next();
         observer.next();
@@ -32,7 +34,9 @@ export class I18nService {
   }
 
   setLanguage(lang: string): void {
-    this.loadTranslations(lang).subscribe(() => {
+    this.currentLanguage = lang;
+
+    this.loadTranslations().subscribe(() => {
       this.currentLanguage = lang;
       localStorage.setItem('language', lang);
       this.loadedTranslations.next();

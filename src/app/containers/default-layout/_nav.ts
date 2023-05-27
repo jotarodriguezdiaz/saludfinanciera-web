@@ -6,13 +6,14 @@ export const navItems: INavData[] = [
     name: 'Finanzas'
   },
   {
-    name: 'Tableros',
+    name: 'Boards',
     url: '/boards',
-    iconComponent: { name: 'cil-speedometer' },
-    badge: {
-      color: 'info',
-      text: 'NEW'
-    }
+    iconComponent: { name: 'cil-star' }
+  },
+  {
+    name: 'Objetivos',
+    url: '/objetivos',
+    iconComponent: { name: 'cil-puzzle' }
   },
   // {
   //   name: 'Colors',

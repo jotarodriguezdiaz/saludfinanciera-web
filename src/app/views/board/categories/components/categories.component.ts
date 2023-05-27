@@ -12,6 +12,7 @@ import { IncomeService } from '../services/incomes.service';
 import { ExpensesService } from '../services/expenses.service';
 import { Periods } from './view-periods/periods';
 import { EPeriod } from 'src/app/shared/enums/period.enum';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
     selector: 'app-categories',
@@ -89,11 +90,17 @@ export class CategoriesComponent implements OnInit {
         private route: ActivatedRoute,
         private translate: I18nService,
         private toastService: ToastService,
-        private modalService: NgbModal) {
+        private modalService: NgbModal,
+        private breakpointObserver: BreakpointObserver) {
     }
 
     ngOnInit(): void {
         this.loadCategories();
+
+        this.breakpointObserver.observe([Breakpoints.XSmall])
+            .subscribe(result => {
+                this.modeSummary = result.matches;
+            });
     }
 
     loadCategories() {
@@ -108,7 +115,7 @@ export class CategoriesComponent implements OnInit {
                     this.categories = categories.map(category => {
                         return { ...category, isVisible: true };
                     });
-                                        
+
                     this.concatTags();
 
                     this.markAllEntriesVisible();
@@ -176,7 +183,7 @@ export class CategoriesComponent implements OnInit {
         this.concatTags();
     }
 
-    private concatTags(){
+    private concatTags() {
         this.setTags = ([] as TagResult[]).concat(...this.categories.map(category =>
             [...category.expenses, ...category.incomes].flatMap(entry => entry.tags)
         ));
@@ -195,6 +202,7 @@ export class CategoriesComponent implements OnInit {
         // Actualizar la propiedad total y isPositive
         category.total = totalIncomes + totalExpenses;
         category.isPositive = category.total >= 0;
+        this.categories = [...this.categories];
     }
 
     deleteCategory(category: GetCategoryResult) {

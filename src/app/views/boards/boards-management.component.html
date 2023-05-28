@@ -3,15 +3,15 @@
 <c-container breakpoint="lg" class="h-auto">
   <div class="row my-3">
     <div class="col-12">
-      <app-create-board (boardCreated)="loadBoards()"></app-create-board>
+      <app-create-board (boardCreated)="loadBoards()"></app-create-board>      
     </div>
   </div>
 
   <c-row *ngIf="boards.length > 0" class="no-select">
     <c-col xs>
       <c-card class="mb-4">
-        <c-card-header>
-          <h4 class="m-0 text-secondary">
+        <c-card-header class="bg-success">
+          <h4 class="m-0 text-white">
             {{ 'misTableros' | translate }}
           </h4>
         </c-card-header>
@@ -46,8 +46,8 @@
   <c-row class="no-select">
     <c-col xs>
       <c-card class="mb-4">
-        <c-card-header>
-          <h4 class="m-0 text-secondary">{{ 'plantillasDisponibles' | translate }}</h4>
+        <c-card-header class="bg-success">
+          <h4 class="m-0 text-white">{{ 'plantillasDisponibles' | translate }}</h4>
         </c-card-header>
         <c-card-body>
           <div class="row">

@@ -1,0 +1,1 @@
+export { GetExpensesResult } from './get-expenses.result';

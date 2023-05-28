@@ -1,0 +1,55 @@
+<app-spinner [active]="spinner"></app-spinner>
+
+<c-container breakpoint="lg" class="h-auto mt-3">
+    <div class="d-flex justify-content-center">
+        <c-card class="mb-4 position-relative col-12 col-xl-10">
+            <c-card-header class="bg-success">
+                <h4 class="m-0 text-white">
+                    {{ 'corregirMes' | translate }}
+                </h4>
+            </c-card-header>
+            <c-card-body>
+                <table [hover]="true" [responsive]="true" [striped]="true" cTable
+                    class="mb-0 border container-entries overflow-hidden">
+
+                    <thead cTableColor="dark">
+                        <tr>
+                            <th scope="col" class="col-7">{{ 'descripcion' | translate }}</th>
+                            <th scope="col" class="col-2">{{ 'importe' | translate }}</th>
+                            <th scope="col" class="col-2">{{ 'importeFinal' | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let expense of expenses; index as i">
+                            <td cTooltip="{{expense.description}}" class="align-middle small text-secondary">
+                                {{ expense.name }}
+                            </td>
+                            <td class="align-middle small">
+                                {{ expense.amount }}
+                            </td>
+                            <td>
+                                <input [placeholder]="expense.amount" 
+                                       [ngModel]="expense.finalValue"
+                                       class="form-control form-control-sm" 
+                                       type="text" 
+                                       aria-label=".form-control-sm example">
+                            </td>
+                        </tr>
+                </table>
+            </c-card-body>
+            <c-card-footer>
+                <div class="d-flex justify-content-between">
+                    <button (click)="goBack()" type="button" class="btn btn-primary" data-bs-toggle="modal">
+                        <i class="bi bi-arrow-return-left"></i>
+                        {{ 'volver' | translate }}
+                    </button>
+
+                    <button (click)="confirmSave()" type="button" class="btn btn-success" data-bs-toggle="modal">
+                        <i class="bi bi-check-lg"></i>
+                        {{ 'confirmarCorreccion' | translate }}
+                    </button>
+                </div>
+            </c-card-footer>
+        </c-card>
+    </div>
+</c-container>

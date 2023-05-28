@@ -135,5 +135,7 @@
     "calcularSimulacion": "Calcular simulación",
     "costeEsObligatorio": "El importe es obligatorio",
     "primeroDebesRealizarUnaSimulacion": "Primero debes realizar una simulación",
-    "seguroQueDeseasEliminarGoal": "¿Estás seguro de que deseas eliminar el objetivo seleccionado?"
+    "seguroQueDeseasEliminarGoal": "¿Estás seguro de que deseas eliminar el objetivo seleccionado?",
+    "corregirMes":"Corregir mes",
+    "estasSeguroDeRealizarLaCorreccion":"¿Estás seguro de realizar la corrección del mes?"
 }

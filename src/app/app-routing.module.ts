@@ -26,7 +26,7 @@ const routes: Routes = [
         loadChildren: () =>
           import('./views/boards/boards.module').then((m) => m.BoardsModule),
         canActivate: [AuthGuard]
-      },      
+      },
       {
         path: 'board/:id',
         loadChildren: () =>
@@ -34,9 +34,15 @@ const routes: Routes = [
         canActivate: [AuthGuard]
       },
       {
-        path: 'objetivos',
+        path: 'goals',
         loadChildren: () =>
           import('./views/goals/goals.module').then((m) => m.GoalsModule),
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'correct-month/:boardId',
+        loadChildren: () =>
+          import('./views/correct-month/correct-month.module').then((m) => m.CorrectMonthModule),
         canActivate: [AuthGuard]
       },
 

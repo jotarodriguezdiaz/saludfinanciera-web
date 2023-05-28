@@ -1,6 +1,15 @@
 <app-spinner [active]="spinner"></app-spinner>
 
-<app-create-category [boardId]="boardId" (categoryCreated)="loadCategories()"></app-create-category>
+<div class="d-flex justify-content-between">
+  <app-create-category [boardId]=" boardId" (categoryCreated)="loadCategories()"></app-create-category>
+
+  <button (click)="goToCorrectMonth()" type="button" class="btn btn-warning" data-bs-toggle="modal">
+    <i class="bi bi-check-circle"></i>
+    {{ 'corregirMes' | translate }}
+  </button>
+</div>
+
+
 
 <nav class="navbar navbar-dark my-3">
   <div class="container-fluid">
@@ -40,8 +49,8 @@
       <div *ngFor="let category of filteredCategories; index as i" class="mb-4"
         [ngClass]="{'col-xl-12 col-xxl-6':modeSummary, 'col-12': !modeSummary}">
         <c-card>
-          <c-card-header>
-            <div class="category-title" [ngClass]="{'category-title-summary':modeSummary}">
+          <c-card-header class="bg-success">
+            <div class="category-title text-white" [ngClass]="{'category-title-summary':modeSummary}">
               {{ category.name }}
             </div>
 
@@ -58,12 +67,14 @@
                 <app-update-category [boardId]="boardId" [category]="category" class="position-relative"
                   (boardUpdated)="loadCategories()" style="top:-4px"></app-update-category>
 
-                <button type="button" class="btn-close" aria-label="Cerrar" (click)="deleteCategory(category)"></button>
+                <button type="button" class="btn-close btn-close-white" aria-label="Cerrar"
+                  (click)="deleteCategory(category)" style="opacity:1"></button>
               </div>
             </div>
           </c-card-header>
           <c-card-body>
-            <table [hover]="true" [responsive]="true" [striped]="true" cTable class="mb-0 border container-entries overflow-hidden">
+            <table [hover]="true" [responsive]="true" [striped]="true" cTable
+              class="mb-0 border container-entries overflow-hidden">
               <thead cTableColor="dark">
                 <tr>
                   <th>{{ 'nombre' | translate }}</th>
@@ -92,7 +103,7 @@
                 <!-- Ingresos -->
                 <ng-container *ngFor="let income of category.incomes; index as i">
                   <tr *ngIf="income.isVisible" class="row-entry">
-                    <td cTooltip="{{income.description}}" class="small text-medium-emphasis text-nowrap"
+                    <td cTooltip="{{income.description}}" class="small text-medium-emphasis text-nowrap align-middle"
                       style="min-width:200px">
                       {{ income.name }}
                     </td>
@@ -114,10 +125,10 @@
                         <div *ngSwitchCase="3">{{ 'anual' | translate }}</div>
                       </div>
                     </td>
-                    <td class="small text-end text-success fw-bold">
-                      <span class="pe-3"> {{ income.amount }} €</span>                      
+                    <td class="small text-end text-success fw-bold align-middle">
+                      <span class="pe-3"> {{ income.amount }} €</span>
                     </td>
-                    <td class="py-0">
+                    <td class="py-0 align-middle">
                       <div class="container-menu-entries">
                         <app-update-income [income]="income" [categoryId]="category.categoryId"
                           class="position-relative" (updated)="updateIncome(category, income, $event)"
@@ -197,7 +208,9 @@
                   <td *ngIf="!modeSummary"></td>
                   <td class="text-end p-1 pe-2"><b>Total</b></td>
                   <td class="small text-end fw-bold">
-                    <span class="p-3" [ngClass]="{'text-success': category.isPositive, 'text-danger': !category.isPositive}">{{ category.total }} €</span>                    
+                    <span class="p-3"
+                      [ngClass]="{'text-success': category.isPositive, 'text-danger': !category.isPositive}">{{
+                      category.total }} €</span>
                   </td>
                   <td></td>
                 </tr>
@@ -227,7 +240,7 @@
 
       <div class="d-flex align-items-baseline justify-content-between mt-4">
         <h5>{{ 'estimacionesSecundarias' | translate }}</h5>
-        
+
         <button (click)="visibleSecondaryEstimates = !visibleSecondaryEstimates" type="button"
           class="btn btn-primary btn-sm btn-minimice">
           <i class="bi"

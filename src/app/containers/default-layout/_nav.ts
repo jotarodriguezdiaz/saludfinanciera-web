@@ -12,7 +12,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Objetivos',
-    url: '/objetivos',
+    url: '/goals',
     iconComponent: { name: 'cil-puzzle' }
   },
   // {

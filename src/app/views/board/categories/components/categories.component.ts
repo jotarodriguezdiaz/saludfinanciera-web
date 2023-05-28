@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { finalize } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriesService } from '../services/categories.service';
 import { GetCategoryResult } from '../models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -91,7 +91,8 @@ export class CategoriesComponent implements OnInit {
         private translate: I18nService,
         private toastService: ToastService,
         private modalService: NgbModal,
-        private breakpointObserver: BreakpointObserver) {
+        private breakpointObserver: BreakpointObserver,
+        private router: Router) {
     }
 
     ngOnInit(): void {
@@ -261,4 +262,7 @@ export class CategoriesComponent implements OnInit {
         });
     }
 
+    goToCorrectMonth() {
+        this.router.navigate(['./correct-month', this.boardId])
+    }
 }

@@ -66,7 +66,9 @@ export class BoardsManagementComponent {
 
   go = (board: GetBoardResult) => this.router.navigate(['./board', board.boardId]);
 
-  createTemplate() {
-
+  createTemplate(templateNumber: number) {
+    this.boardService.createTemplate(templateNumber)
+      .subscribe(() => this.loadBoards());
   }
+
 }

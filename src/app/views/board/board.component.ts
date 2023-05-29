@@ -9,9 +9,9 @@ import { GetBoardResult } from '../boards/models';
     styleUrls:['./board.component.scss']
 })
 export class BoardComponent implements OnInit {
-    spinner = false;
+    spinner = false;    
     board!: GetBoardResult;
-
+    
     constructor(
         private service: BoardService,
         private route: ActivatedRoute) {

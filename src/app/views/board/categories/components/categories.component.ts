@@ -21,6 +21,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 })
 export class CategoriesComponent implements OnInit {
     @Input() boardId!: number;
+    @Input() hasPendingCorrection = false;
 
     spinner = false;
     categories!: GetCategoryResult[];

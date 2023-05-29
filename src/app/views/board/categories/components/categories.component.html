@@ -3,7 +3,7 @@
 <div class="d-flex justify-content-between">
   <app-create-category [boardId]=" boardId" (categoryCreated)="loadCategories()"></app-create-category>
 
-  <button (click)="goToCorrectMonth()" type="button" class="btn btn-warning" data-bs-toggle="modal">
+  <button *ngIf="hasPendingCorrection" (click)="goToCorrectMonth()" type="button" class="btn btn-warning" data-bs-toggle="modal">
     <i class="bi bi-check-circle"></i>
     {{ 'corregirMes' | translate }}
   </button>

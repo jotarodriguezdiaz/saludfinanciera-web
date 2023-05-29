@@ -8,10 +8,10 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 
-export class BoardService {  
+export class BoardService {
   private url = environment.urlGateway + '/boards';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getUserBoards(): Observable<GetBoardResult[]> {
     return this.http.get<GetBoardResult[]>(`${this.url}`);
@@ -31,5 +31,10 @@ export class BoardService {
 
   deleteBoard(id: number): Observable<void> {
     return this.http.delete<void>(`${this.url}/${id}`);
+  }
+
+  createTemplate(templateNumber: number): Observable<number> {
+    const command = { templateNumber }
+    return this.http.post<number>(`${this.url}/create-template`, command);
   }
 }

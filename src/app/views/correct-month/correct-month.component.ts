@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { finalize } from 'rxjs';
 import { CorrectMonthService } from './services/correct-month.service';
 import { ToastService } from '../../core/toast/toast.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from 'src/app/shared/components/confirm-modal/confirmation-modal.component';
-import { GetExpensesResult } from './models';
-import { ActivatedRoute } from '@angular/router';
+import { CorrectMonthCommand, GetExpensesResult } from './models';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'app-correct-month',
@@ -17,13 +17,24 @@ export class CorrectMonthComponent implements OnInit {
     validated = false;
     spinner = false;
     expenses: GetExpensesResult[] = [];
+    totalFinalAmount: number = 0;
+
+    get totalAmount() {
+        return this.expenses.reduce((total, expense) => total + expense.amount, 0);
+    }
+
+    // get totalFinalAmount() {
+    //     return this.expenses.reduce((total, expense) => total + expense.finalValue, 0);
+    // }
 
     constructor(
+        private cdr: ChangeDetectorRef,
         private route: ActivatedRoute,
         private service: CorrectMonthService,
         private modalService: NgbModal,
         private toastService: ToastService,
-        private translate: I18nService) {
+        private translate: I18nService,
+        private router: Router) {
     }
 
     ngOnInit(): void {
@@ -39,7 +50,11 @@ export class CorrectMonthComponent implements OnInit {
             )
             .subscribe({
                 next: (expenses) => {
-                    this.expenses = expenses;
+                    this.expenses = expenses.map(expense => ({
+                        ...expense,
+                        finalValue: expense.amount
+                    }));
+                    this.calcTotalAmount();
                 },
                 error: () => {
                     this.toastService.danger(this.translate.translate('seHaProducidoUnError'));
@@ -47,44 +62,47 @@ export class CorrectMonthComponent implements OnInit {
             });
     }
 
+    calcTotalAmount() {
+        this.totalFinalAmount = this.expenses.reduce((total, expense) => total + expense.finalValue, 0);
+    }
+
     confirmSave() {
-        this.validated = true;
+        if (this.isFormInvalid()) {
+            this.toastService.warning(this.translate.translate('rellenaTodosLosCampos'));
+        } else {
+            const modalRef = this.modalService.open(ConfirmationModalComponent);
 
-        const modalRef = this.modalService.open(ConfirmationModalComponent);
+            modalRef.componentInstance.confirmMessage = this.translate.translate('estasSeguroDeRealizarLaCorreccion');
+            modalRef.result.then((result) => {
+                if (result === 'confirm') {
+                    this.save();
+                }
+            });
+        }
+    }
 
-        modalRef.componentInstance.confirmMessage = this.translate.translate('estasSeguroDeRealizarLaCorreccion');
-        modalRef.result.then((result) => {
-            if (result === 'confirm') {
-                this.spinner = true;
-                this.save();
-            }
-        });
+    private isFormInvalid(): boolean {
+        return this.expenses.some(i => i.finalValue == null);
     }
 
     private save() {
-        // cuando termine que rediriga a boards
+        const errorMargin = ((this.totalFinalAmount - this.totalAmount) / this.totalAmount) * 100;
 
-        // if (this.form.valid) {
-        //     const command = this.form.value;
-        //     command.boardId = this.boardId;
+        const command = {
+            // En backend hay que restar a los ingresos los gastos para saber el amount
+            boardId: this.boardId,
+            amount: this.totalFinalAmount,
+            errorMargin
+        } as CorrectMonthCommand;
 
-        //     this.spinner = true;
-        //     this.service.addCategory(command)
-        //         .pipe(finalize(() => this.spinner = false))
-        //         .subscribe({
-        //             next: () => {
-        //                 this.cleanForm();
-        //                 this.visible = false;
-        //                 this.categoryCreated.emit();
-        //                 this.toastService.success(this.translate.translate('seHaCreadoCorrectamenteCategoria'));
-        //             },
-        //             error: () => {
-        //                 this.toastService.danger(this.translate.translate('seHaProducidoUnError'));
-        //             }
-        //         });
+        this.spinner = true;
+        this.service.correctMonth(command)
+            .pipe(finalize(() => this.spinner = false))
+            .subscribe(() => {
+                this.toastService.success(this.translate.translate('seHaCorregidoElMesCorrectamente'));
+                this.goBack();
+            })
     }
 
-    goBack() {
-
-    }
+    goBack = () => this.router.navigate(['./board', this.boardId]);
 }

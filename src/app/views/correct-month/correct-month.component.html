@@ -21,19 +21,22 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let expense of expenses; index as i">
-                            <td cTooltip="{{expense.description}}" class="align-middle small text-secondary">
+                            <td cTooltip="{{expense.description}}" class="align-middle small text-secondary py-1">
                                 {{ expense.name }}
                             </td>
-                            <td class="align-middle small">
-                                {{ expense.amount }}
+                            <td class="align-middle small py-1">
+                                {{ expense.amount }} €
                             </td>
-                            <td>
-                                <input [placeholder]="expense.amount" 
-                                       [ngModel]="expense.finalValue"
-                                       class="form-control form-control-sm" 
-                                       type="text" 
-                                       aria-label=".form-control-sm example">
+                            <td class="py-1">
+                                <input [placeholder]="expense.amount" [(ngModel)]="expense.finalValue"
+                                    (blur)="calcTotalAmount()" class="form-control form-control-sm" type="number"
+                                    aria-label=".form-control-sm example">
                             </td>
+                        </tr>
+                        <tr class="fw-bolder">
+                            <td class="text-end">Total</td>
+                            <td class="text-success">{{totalAmount}}</td>
+                            <td class="text-success">{{totalFinalAmount}}</td>
                         </tr>
                 </table>
             </c-card-body>

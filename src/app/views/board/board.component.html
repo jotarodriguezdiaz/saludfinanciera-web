@@ -5,6 +5,6 @@
             {{board.name}}
         </h3>
 
-        <app-categories [boardId]="board.boardId" class="mt-3 d-block"></app-categories>
+        <app-categories [boardId]="board.boardId" [hasPendingCorrection]="board.hasPendingCorrection" class="mt-3 d-block"></app-categories>
     </div>
 </c-container>

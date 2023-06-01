@@ -40,7 +40,10 @@
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "src/scss/styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/html2canvas/dist/html2canvas.min.js",
+              "node_modules/jspdf/dist/jspdf.umd.min.js"
+            ],
             "allowedCommonJsDependencies": [
               "chart.js",
               "@coreui/chartjs/dist/js/coreui-chartjs.js"
@@ -115,7 +118,10 @@
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "src/scss/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/html2canvas/dist/html2canvas.min.js",
+              "node_modules/jspdf/dist/jspdf.umd.min.js"
+            ]
           }
         }
       }

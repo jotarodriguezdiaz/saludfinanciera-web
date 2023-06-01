@@ -3,10 +3,18 @@
 <div class="d-flex justify-content-between">
   <app-create-category [boardId]=" boardId" (categoryCreated)="loadCategories()"></app-create-category>
 
-  <button *ngIf="hasPendingCorrection" (click)="goToCorrectMonth()" type="button" class="btn btn-warning" data-bs-toggle="modal">
-    <i class="bi bi-check-circle"></i>
-    {{ 'corregirMes' | translate }}
-  </button>
+  <div class="d-none d-sm-block">
+    <button (click)="downloadPdf()" type="button" class=" btn btn-primary">
+      <i class="bi bi-file-earmark-pdf"></i>
+      {{ 'descargar' | translate }}
+    </button>
+
+    <button *ngIf="hasPendingCorrection" (click)="goToCorrectMonth()" type="button" class="btn btn-warning ms-3"
+      data-bs-toggle="modal">
+      <i class="bi bi-check-circle"></i>
+      {{ 'corregirMes' | translate }}
+    </button>
+  </div>
 </div>
 
 
@@ -43,7 +51,7 @@
   </div>
 </nav>
 
-<c-row class="mt-2">
+<c-row class="mt-2" id="container-board-complete-pdf">
   <div class="col-md-12 col-lg-9">
     <c-row>
       <div *ngFor="let category of filteredCategories; index as i" class="mb-4"

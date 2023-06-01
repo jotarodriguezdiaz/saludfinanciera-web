@@ -167,5 +167,6 @@
     "grafico": "Gráfico",
     "verSimulaciones": "Ver simulaciones",
     "simulacionesRegistradas": "Simulaciones guardadas",
-    "seHaCreadoLaSimulacionConExito": "Se ha creado la simulación con éxito"
+    "seHaCreadoLaSimulacionConExito": "Se ha creado la simulación con éxito",
+    "descargar": "Descargar"
 }

@@ -1,0 +1,228 @@
+<app-spinner [active]="spinner"></app-spinner>
+
+<c-container breakpoint="lg" class="h-auto">
+    <button (click)="openModal()" type="button" class="btn btn-primary mt-3" data-bs-toggle="modal">
+        <i class="bi bi-clipboard-data"></i>
+        {{ 'verSimulaciones' | translate }}
+    </button>
+
+    <c-row class="no-select mt-3">
+        <c-col xs>
+            <c-card class="mb-4 position-relative">
+                <c-card-header class="bg-success">
+                    <h4 class="m-0 text-white">
+                        {{ 'simuladorDeudas' | translate }}
+                    </h4>
+                </c-card-header>
+                <c-card-body>
+                    <div class="row pb-3">
+                        <div class="col-12 col-md-3 variables-container">
+                            <form [formGroup]="form" (ngSubmit)="simulate()">
+                                <h5>{{ 'variables' | translate }}</h5>
+
+                                <div class="mb-2 mt-3">
+                                    <label for="import" class="form-label">
+                                        {{ 'importe' | translate }}
+                                        <span class="text-danger fs-5 fw-bold ps-1">*</span>
+                                    </label>
+                                    <input formControlName="import" type="number" class="form-control" id="import"
+                                        aria-describedby="import" placeholder="150000">
+                                </div>
+
+                                <div class="mb-2">
+                                    <label for="typeInterest" class="form-label">
+                                        {{ 'tipoInteres' | translate }}
+                                        <span class="text-danger fs-5 fw-bold ps-1">*</span>
+                                    </label>
+                                    <input formControlName="typeInterest" type="number" class="form-control"
+                                        id="typeInterest" aria-describedby="typeInterest" placeholder="3.00">
+                                </div>
+
+                                <div class="mb-2">
+                                    <label for="time" class="form-label">
+                                        {{ 'plazoEnAños' | translate }}
+                                        <span class="text-danger fs-5 fw-bold ps-1">*</span>
+                                    </label>
+                                    <input formControlName="time" type="number" class="form-control" id="time"
+                                        aria-describedby="time" placeholder="25">
+                                </div>
+
+                                <div class="mb-2">
+                                    <label for="annualProfitability" class="form-label">
+                                        {{ 'rentabilidadAnual' | translate }}
+                                        <span class="text-danger fs-5 fw-bold ps-1">*</span>
+                                    </label>
+                                    <input formControlName="annualProfitability" type="number" class="form-control"
+                                        id="annualProfitability" aria-describedby="annualProfitability"
+                                        placeholder="7.00">
+                                </div>
+
+                                <div class="mb-2">
+                                    <label for="taxes" class="form-label">
+                                        {{ 'impuestos' | translate }}
+                                        <span class="text-danger fs-5 fw-bold ps-1">*</span>
+                                    </label>
+                                    <input formControlName="taxes" type="number" class="form-control" id="taxes"
+                                        aria-describedby="taxes" placeholder="21">
+                                </div>
+
+                                <div class="mb-2">
+                                    <label for="monthlySaving" class="form-label">
+                                        {{ 'ahorroMensual' | translate }}
+                                        <span class="text-danger fs-5 fw-bold ps-1">*</span>
+                                    </label>
+                                    <input formControlName="monthlySaving" type="number" class="form-control"
+                                        id="monthlySaving" aria-describedby="monthlySaving" placeholder="700">
+                                </div>
+
+                                <button type="submit" class="btn btn-primary float-start mt-2">{{'simular' |
+                                    translate}}</button>
+                                <button [disabled]="!loan || form.pristine" type="submit" (click)="createSimulation()"
+                                    class="btn btn-success float-end mt-2">{{'guardar' |
+                                    translate}}</button>
+                            </form>
+                        </div>
+
+                        <div class="col-12 col-md-9">
+                            <h5>{{ 'simulador' | translate }}</h5>
+
+                            <ng-container *ngIf="!loan">
+                                <div class="alert alert-warning">{{ 'noHayDatosParaCargar' | translate }}
+                                </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="loan">
+                                <ul class="nav nav-tabs mt-4 mb-3">
+                                    <li class="nav-item" (click)="tabActive = 0">
+                                        <a class="nav-link" [ngClass]="{'active':this.tabActive === 0}"
+                                            aria-current="page">{{ 'deuda' | translate }}</a>
+                                    </li>
+                                    <li class="nav-item" (click)="tabActive = 1">
+                                        <a class="nav-link" [ngClass]="{'active':this.tabActive === 1}">{{ 'ahorro' |
+                                            translate }}</a>
+                                    </li>
+                                </ul>
+
+                                <div *ngIf="this.tabActive === 0" class="container-debts">
+                                    <table [hover]="true" [responsive]="true" [striped]="true" cTable
+                                        class="mb-0 border container-entries overflow-hidden">
+
+                                        <thead cTableColor="dark">
+                                            <tr>
+                                                <th>{{ 'year' | translate }}</th>
+                                                <th>{{ 'capitalPendiente' | translate }}</th>
+                                                <th>{{ 'intereses' | translate }}</th>
+                                                <th>{{ 'capitalAamortizar' | translate }}</th>
+                                                <th>{{ 'cuota' | translate }}</th>
+                                                <th>{{ 'tipoDeInteres' | translate }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of tableAmortization; index as i">
+                                                <td>{{ item.year }}</td>
+                                                <td>{{item.capitalPending | currency:'EUR':'symbol-narrow'}}</td>
+                                                <td>{{item.interests | currency:'EUR':'symbol-narrow'}}</td>
+                                                <td>{{item.quantityAmortized | currency:'EUR':'symbol-narrow'}}</td>
+                                                <td>{{item.quota | currency:'EUR':'symbol-narrow'}}</td>
+                                                <td>{{item.typeInterest | currency:'EUR':'symbol-narrow'}}</td>
+                                            </tr>
+                                    </table>
+                                </div>
+
+                                <div *ngIf="this.tabActive === 1" class="container-saving">
+                                    <table [hover]="true" [responsive]="true" [striped]="true" cTable
+                                        class="mb-0 border container-entries overflow-hidden">
+
+                                        <thead cTableColor="dark">
+                                            <tr>
+                                                <th>{{ 'year' | translate }}</th>
+                                                <th>{{ 'ahorroAnual' | translate }}</th>
+                                                <th>{{ 'intereses' | translate }}</th>
+                                                <th>{{ 'ahorroAcumulado' | translate }}</th>
+                                                <th>{{ 'ahorroDespImpuestos' | translate }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of tableSavings; index as i">
+                                                <td>{{ item.year }}</td>
+                                                <td>{{ item.annualSaving | currency:'EUR':'symbol-narrow'}}</td>
+                                                <td>{{ item.interests | currency:'EUR':'symbol-narrow'}}</td>
+                                                <td>{{ item.accumulatedSaving | currency:'EUR':'symbol-narrow'}}</td>
+                                                <td>{{ item.valueAfterTaxes | currency:'EUR':'symbol-narrow'}}</td>
+                                            </tr>
+                                    </table>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="container-stats pt-3">
+                            <c-col xs="12">
+                                <c-card class="mb-4">
+                                    <c-card-header class="bg-success text-white">
+                                        {{ 'grafico' | translate }}
+                                    </c-card-header>
+                                    <c-card-body>
+                                        <ng-container *ngIf="!loan">
+                                            <div class="alert alert-warning">{{ 'noHayDatosParaCargar' | translate }}
+                                            </div>
+                                        </ng-container>
+
+                                        <c-chart *ngIf="loan" type="line" [data]="chartLineData"></c-chart>
+                                    </c-card-body>
+                                </c-card>
+                            </c-col>
+                        </div>
+                    </div>
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+</c-container>
+
+
+<!-- Simulations  -->
+<c-modal id="simulations" [visible]="visible" alignment="center" size="lg" (visibleChange)="handleModal($event)">
+    <c-modal-header>
+        <h5 cModalTitle>{{ 'simulacionesRegistradas' | translate }} </h5>
+
+        <button (click)="openModal()" cButtonClose white></button>
+    </c-modal-header>
+    <c-modal-body>
+        <div *ngIf="simulations.length === 0" class="alert alert-warning">{{ 'noHayDatosParaCargar' | translate }}</div>
+
+        <ng-container *ngIf="simulations.length > 0">
+            <table [hover]="true" [responsive]="true" [striped]="true" cTable
+                class="mb-0 border container-entries overflow-hidden">
+
+                <thead cTableColor="dark">
+                    <tr>
+                        <th>{{ 'import' | translate }}</th>
+                        <th>{{ 'typeInterest' | translate }}</th>
+                        <th>{{ 'time' | translate }}</th>
+                        <th>{{ 'annualProfitability' | translate }}</th>
+                        <th>{{ 'taxes' | translate }}</th>
+                        <th>{{ 'monthlySaving' | translate }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of simulations; index as i" 
+                        (click)="selectSimulation(item)"
+                        style="cursor: pointer">
+                        <td>{{ item.import }}</td>
+                        <td>{{ item.typeInterest }}%</td>
+                        <td>{{ item.time }}</td>
+                        <td>{{ item.annualProfitability }}%</td>
+                        <td>{{ item.taxes }}</td>
+                        <td>{{ item.monthlySaving }}</td>
+                    </tr>
+            </table>
+        </ng-container>
+    </c-modal-body>
+    <c-modal-footer>
+        <button (click)="openModal()" cButton color="secondary">
+            {{ 'cerrar' | translate }}
+        </button>
+    </c-modal-footer>
+</c-modal>

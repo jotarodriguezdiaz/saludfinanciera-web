@@ -15,6 +15,15 @@ export const navItems: INavData[] = [
     url: '/goals',
     iconComponent: { name: 'cil-puzzle' }
   },
+  {
+    title: true,
+    name: 'Deudas'
+  },
+  {
+    name: 'Simulador deudas',
+    url: '/debts-simulator',
+    iconComponent: { name: 'cil-calculator' }
+  },
   // {
   //   name: 'Colors',
   //   url: '/theme/colors',

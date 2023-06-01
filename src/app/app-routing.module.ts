@@ -45,6 +45,14 @@ const routes: Routes = [
           import('./views/correct-month/correct-month.module').then((m) => m.CorrectMonthModule),
         canActivate: [AuthGuard]
       },
+      {
+        path: 'debts-simulator',
+        loadChildren: () =>
+          import('./views/debts-simulator/debts-simulator.module').then((m) => m.DebtsSimulator),
+        canActivate: [AuthGuard]
+      },
+
+
 
       {
         path: 'dashboard',

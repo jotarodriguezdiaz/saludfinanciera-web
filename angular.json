@@ -50,6 +50,14 @@
             ]
           },
           "configurations": {
+            "docker": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.ts"
+                }
+              ]
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -85,6 +93,9 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
+            "docker": {
+              "browserTarget": "coreui-free-angular-admin-template:build:docker"
+            },
             "production": {
               "browserTarget": "coreui-free-angular-admin-template:build:production"
             },

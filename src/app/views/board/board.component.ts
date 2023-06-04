@@ -6,12 +6,12 @@ import { GetBoardResult } from '../boards/models';
 
 @Component({
     templateUrl: './board.component.html',
-    styleUrls:['./board.component.scss']
+    styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit {
-    spinner = false;    
+    spinner = false;
     board!: GetBoardResult;
-    
+
     constructor(
         private service: BoardService,
         private route: ActivatedRoute) {
@@ -21,7 +21,7 @@ export class BoardComponent implements OnInit {
         this.loadBoard();
     }
 
-    private loadBoard() {
+    loadBoard() {
         const boardId = this.route.snapshot.paramMap.get('id');
 
         this.spinner = true;

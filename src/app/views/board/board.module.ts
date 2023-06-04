@@ -21,6 +21,7 @@ import { ViewCategoriesComponent } from './categories/components/view-categories
 import { ViewTagsComponent } from './categories/components/view-tags/view-tags.component';
 import { ViewPeriodsComponent } from './categories/components/view-periods/view-periods.component';
 import { SummaryComponent } from './categories/components/summary/summary.component';
+import { CalculateNoteComponent } from './calculate-note/calculate-note.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { SummaryComponent } from './categories/components/summary/summary.compon
     ViewCategoriesComponent,
     ViewTagsComponent,
     ViewPeriodsComponent,
-    SummaryComponent
+    SummaryComponent,
+    CalculateNoteComponent
   ],
   imports: [
     ConfirmationModule,

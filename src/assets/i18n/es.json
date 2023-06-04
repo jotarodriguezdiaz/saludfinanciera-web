@@ -153,7 +153,7 @@
     "simular": "Simular",
     "realizarSimulacion": "Realizar simulación",
     "rellenaTodosLosCamposObligatorios": "Rellena todos los campos obligatorios",
-    "noHayDatosParaCargar":"No hay datos para mostrar",
+    "noHayDatosParaCargar": "No hay datos para mostrar",
     "simuladorDeudas": "Simulador deudas",
     "variables": "Variables",
     "tipoInteres": "Tipo interés",
@@ -169,5 +169,15 @@
     "simulacionesRegistradas": "Simulaciones guardadas",
     "seHaCreadoLaSimulacionConExito": "Se ha creado la simulación con éxito",
     "descargar": "Descargar",
-    "crearNuevoTemplateVacaciones": "Crear plantilla vacaciones"
+    "crearNuevoTemplateVacaciones": "Crear plantilla vacaciones",
+    "notaFinanciera": "Nota financiera",
+    "calcularNota": "Calcular nota",
+    "seHaCalculadoLaNotaFinanciera": "Se ha calculado correctamente la nota financiera",
+    "edad": "Edad",
+    "richness": "Riqueza",
+    "richnessSignificado": "conjunto de activos financieros y bienes materiales que posee una persona, los cuales pueden incluir propiedades, inversiones, acciones, bonos, ahorros en efectivo, entre otros.",
+    "calcularNotaFinanciera": "Calcular nota financiera",
+    "percentageMonthlyInvestment": "Porcentaje mensual destinado a inversión",
+    "savingPercentage": "Porcentaje mensual destinado al ahorro",
+    "passive": "Cantidad de dinero total de endeudamiento"
 }

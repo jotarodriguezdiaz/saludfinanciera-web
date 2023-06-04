@@ -1,10 +1,23 @@
 <c-container breakpoint="lg" class="h-auto">
     <div *ngIf="board" class="no-select">
-        <h3 class="mt-2 text-secondary">
-            <i class="bi bi-boxes"></i>
-            {{board.name}}
-        </h3>
+        <div class="d-flex justify-content-between align-items-center">
+            <h3 class="mt-2 text-secondary">
+                <i class="bi bi-boxes"></i>
+                {{board.name}}
+            </h3>
 
-        <app-categories [boardId]="board.boardId" [hasPendingCorrection]="board.hasPendingCorrection" class="mt-3 d-block"></app-categories>
+            <div *ngIf="board" class="d-flex justify-content-between align-items-center">
+                <app-calculate-note [board]="board" (noteCalculated)="loadBoard()"></app-calculate-note>
+
+                <span class="fs-4 text-light badge fw-normal" cTooltip="{{'notaFinanciera' | translate}}"
+                    [ngClass]="{'bg-success':board.financialHealthNote >= 50, 'bg-danger': board.financialHealthNote < 50}">
+                    {{board.financialHealthNote}}
+                </span>
+            </div>
+        </div>
+
+
+        <app-categories [boardId]="board.boardId" [hasPendingCorrection]="board.hasPendingCorrection"
+            class="mt-3 d-block"></app-categories>
     </div>
 </c-container>

@@ -1,0 +1,78 @@
+<button (click)="openModal()" type="button" class="btn btn-outline-success btn-sm me-3 position-relative"
+    style="top: 1px" data-bs-toggle="modal">
+    <i class="bi bi-award"></i>
+    {{ 'calcularNota' | translate }}
+</button>
+
+
+<!-- Modal calcular  -->
+<form [formGroup]="form" (ngSubmit)="save()">
+    <c-modal id="simulations" [visible]="visible" alignment="center" size="lg" (visibleChange)="handleModal($event)">
+        <c-modal-header>
+            <h5 cModalTitle>{{ 'calcularNotaFinanciera' | translate }} </h5>
+
+            <button (click)="openModal()" cButtonClose white></button>
+        </c-modal-header>
+        <c-modal-body>
+            <div class="row pb-3">
+                <div class="col-12 variables-container">
+                    <div class="mb-2">
+                        <label for="age" class="form-label">
+                            {{ 'edad' | translate }}
+                            <span class="text-danger fs-5 fw-bold ps-1">*</span>
+                        </label>
+                        <input formControlName="age" type="number" class="form-control" id="age" aria-describedby="age"
+                            placeholder="30">
+                    </div>
+
+                    <div class="mb-2 mt-3">
+                        <label for="richness" class="form-label">
+                            {{ 'richness' | translate }}
+                            <span class="text-danger fs-5 fw-bold ps-1">*</span>
+                        </label>
+                        <input formControlName="richness" type="number" class="form-control" id="richness"
+                            aria-describedby="richness" placeholder="30000">
+                        <div id="richness" class="form-text">{{'richnessSignificado'|translate}}
+                        </div>
+                    </div>
+
+                    <div class="mb-2 mt-3">
+                        <label for="percentageMonthlyInvestment" class="form-label">
+                            {{ 'percentageMonthlyInvestment' | translate }}
+                            <span class="text-danger fs-5 fw-bold ps-1">*</span>
+                        </label>
+                        <input formControlName="percentageMonthlyInvestment" type="number" class="form-control"
+                            id="percentageMonthlyInvestment" aria-describedby="percentageMonthlyInvestment"
+                            placeholder="30">
+                    </div>
+
+                    <div class="mb-2 mt-3">
+                        <label for="savingPercentage" class="form-label">
+                            {{ 'savingPercentage' | translate }}
+                            <span class="text-danger fs-5 fw-bold ps-1">*</span>
+                        </label>
+                        <input formControlName="savingPercentage" type="number" class="form-control"
+                            id="savingPercentage" aria-describedby="savingPercentage" placeholder="20">
+                    </div>
+
+                    <div class="mb-2 mt-3">
+                        <label for="passive" class="form-label">
+                            {{ 'passive' | translate }}
+                            <span class="text-danger fs-5 fw-bold ps-1">*</span>
+                        </label>
+                        <input formControlName="passive" type="number" class="form-control" id="passive"
+                            aria-describedby="passive" placeholder="10000">
+                    </div>
+                </div>
+            </div>
+        </c-modal-body>
+        <c-modal-footer>
+            <button (click)="openModal()" cButton color="secondary">
+                {{ 'cerrar' | translate }}
+            </button>
+
+            <button type="submit" class="btn btn-primary ">{{'guardar' |
+                translate}}</button>
+        </c-modal-footer>
+    </c-modal>
+</form>

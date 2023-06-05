@@ -7,6 +7,7 @@ import { finalize } from 'rxjs';
 import { ToastService } from 'src/app/core/toast/toast.service';
 import { I18nService } from 'src/app/core/i18n/i18n.service';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/auth';
 
 @Component({
   templateUrl: './boards-management.component.html',
@@ -30,10 +31,19 @@ export class BoardsManagementComponent {
     private modalService: NgbModal,
     private toastService: ToastService,
     private translate: I18nService,
-    private router: Router) { }
+    private router: Router,
+    private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.loadBoards();
+    if (this.authService.isAuthenticated()) {
+      if (this.router.routerState.snapshot.url === '/') {
+        this.router.navigate(['./boards']);
+      } else {
+        this.loadBoards();
+      }
+    } else {
+      this.router.navigate(['./login']);
+    }
   }
 
   loadBoards(): void {

@@ -79,8 +79,8 @@ export class RegisterComponent {
     this.service.register(request)
       .pipe(finalize(() => this.spinner = false))
       .subscribe((res: RegistrationResponse) => {
-        this.authService.saveToken(res.token)
-        this.router.navigate(['/dashboard']);
+        this.authService.saveToken(res.token)        
+        this.router.navigate(['/boards']);
       })
   }
 }
